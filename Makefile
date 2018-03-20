@@ -1,9 +1,9 @@
 CC=gcc
-CFLAGS=-Wall -I.
-OBJS=20131604.o
+CFLAGS=-Wall -I. -Iexecution
+OBJS=20131604.o execution/execution.o
 
 %.o: %.c
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -c -g -o $@ $< $(CFLAGS)
 
 20131604.out: $(OBJS)
 	$(CC) -o $@ $^ $(CFLAGS)
@@ -11,4 +11,4 @@ OBJS=20131604.o
 .PHONY: clean
 
 clean:
-	rm -rf *.o 20131604.out
+	rm -rf *.o **/*.o 20131604.out
