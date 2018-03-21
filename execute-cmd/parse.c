@@ -130,7 +130,7 @@ void deallocArguments(Arguments args) {
 int saveToBuffer(char *buffer, int pos, char *src, int len) {
   buffer += pos;
   memcpy(buffer, src, len);
-  buffer += len + 1;
+  buffer += len;
   *buffer = '\0';
   return pos + len + 1;
 }
