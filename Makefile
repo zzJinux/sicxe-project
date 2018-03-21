@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -Wall $(INCLUDE_PARAMS)
 INCLUDES := execute-cmd
 INCLUDE_PARAMS := $(foreach d,$(INCLUDES),-I$d)
 SRCS := 20131604.c $(wildcard execute-cmd/*.c)
@@ -9,7 +9,7 @@ OBJS := $(patsubst %.c, %.o, $(SRCS))
 	$(CC) -o $@ $^ $(CFLAGS)
 
 20131604.o: 20131604.c
-	$(CC) -c -g -o $@ $< $(CFLAGSA) $(INCLUDE_PARAMS)
+	$(CC) -c -g -o $@ $< $(CFLAGS)
 
 %.o: %.c
 	$(CC) -c -g -o $@ $< $(CFLAGS)
