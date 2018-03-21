@@ -1,8 +1,8 @@
 CC = gcc
 CFLAGS = -Wall $(INCLUDE_PARAMS)
-INCLUDES := execute-cmd
+INCLUDES := . shell-context execute-cmd
 INCLUDE_PARAMS := $(foreach d,$(INCLUDES),-I$d)
-SRCS := 20131604.c $(wildcard execute-cmd/*.c)
+SRCS := $(foreach d,$(INCLUDES),$(wildcard $d/*.c))
 OBJS := $(patsubst %.c, %.o, $(SRCS))
 
 20131604.out: $(OBJS)

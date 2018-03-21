@@ -1,11 +1,17 @@
 #include <stdio.h>
 #include <string.h>
+#include "shell-context.h"
 #include "execute-cmd.h"
 #define MAX_LEN 256
 
 void flushRestInput(char *temp);
 
 int main() {
+  ShellContextPtr pContext = initShellContext();
+  if(pContext == NULL) {
+    printf("- error: dynamic memory allocation failed\n");
+  }
+
   while(1) {
     printf("sicsim> ");
     // stdin으로부터 최대 MAX_LEN 길이의 커맨드 입력받음 (+2는 newline과 null)
@@ -17,8 +23,8 @@ int main() {
     unsigned errorCode;
     errorCode = parseInput(&args, input, len);
 
-    if(errorCode & ERROR_FOUND) {
-      errorCode &= ~ERROR_FOUND;
+    if(errorCode & PARSE_FAIL) {
+      errorCode &= ~PARSE_FAIL;
       if(errorCode & INVALID_FORMAT) {
         errorCode &= ~INVALID_FORMAT;
         char *desc = "";
@@ -45,16 +51,31 @@ int main() {
       }
     }
 
-    // TODO: BELOW
-    errorCode = executeCommand(args);
+    args.RAW = input;
+    args.RAW_LEN = len;
+
+    EXIT_FLAG exitFlag = executeCommand(pContext, args);
     deallocArguments(args);
-    if(errorCode == EXIT_FLAG) {
+
+    if(exitFlag & EXECUTE_ERROR) {
+      exitFlag &= ~EXECUTE_ERROR;
+      if(exitFlag & UNKNOWN_COMMAND) {
+        printf("- error: unknown command");
+      }
+      else if(exitFlag & UNKNOWN_ARGUMENT) {
+        printf("- error: unknown argument");
+      }
+      putchar('\n');
+    }
+    if(exitFlag == QUIT_SHELL) {
       puts("Exit sicsim...");
       break;
     }
 
     flushRestInput(input);
   }
+
+  cleanupShellContext(pContext);
   return 0;
 }
 
