@@ -8,8 +8,7 @@ int saveToBuffer(char *buffer, int pos, char *src, int len);
 char jumpBlank(char *str, int *pPos);
 
 // parseCommand: 명령어 텍스트를 토큰들의 배열로 파싱
-// rawCmd는 null-termination이 보장돼야함
-unsigned parseCommand(char *rawCmd, Command *pCommand) {
+unsigned parseInput(Arguments *pArgs, char *rawCmd, int cmdLength) {
   unsigned errorCode = 0;
   int i=0;
   char ch;
@@ -30,7 +29,6 @@ unsigned parseCommand(char *rawCmd, Command *pCommand) {
     goto cleanup;
   }
 
-  int cmdLength = strlen(rawCmd);
   int bufferPos = 0;
   // 파싱 후 문자열들의 길이의 총합은 raw input 보다 반드시 크지 못함
   buffer = (char *)malloc((cmdLength+1) * sizeof(char));
@@ -109,24 +107,24 @@ unsigned parseCommand(char *rawCmd, Command *pCommand) {
 
   /* 리턴 전 Command 구조체에 포인터 저장 */
 parse_end:
-  pCommand->argc = argc;
-  pCommand->argv = argv;
+  pArgs->argc = argc;
+  pArgs->argv = argv;
   return 0;
 
   /* 에러발생 시 리턴 전 수행목적 */ 
 cleanup:
   free(argv);
   free(buffer);
-  pCommand->argc = 0;
-  pCommand->argv = NULL;
+  pArgs->argc = 0;
+  pArgs->argv = NULL;
   return errorCode;
 }
 
-void deallocCommand(Command command) {
-  free(command.argv[0]);
-  free(command.argv);
-  command.argc = 0;
-  command.argv = NULL;
+void deallocArguments(Arguments args) {
+  free(args.argv[0]);
+  free(args.argv);
+  args.argc = 0;
+  args.argv = NULL;
 }
 
 int saveToBuffer(char *buffer, int pos, char *src, int len) {

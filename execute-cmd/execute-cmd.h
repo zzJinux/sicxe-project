@@ -21,16 +21,16 @@
 
 #define EXIT_FLAG 16
 
-typedef struct _Command {
+typedef struct _Arguments {
   int argc; char **argv;
-} Command;
+} Arguments;
 
 // parseCommand: 명령어 텍스트를 토큰들의 배열로 파싱
-unsigned parseCommand(char *rawCmd, Command *pCommand);
+unsigned parseInput(Arguments *pArgs, char *rawCmd, int cmdLength);
 
 // deallocCommand: parseCommand 에서 수행한 메모리 반환
-void deallocCommand(Command pCommand);
+void deallocArguments(Arguments args);
 
-unsigned executeCommand(Command cmd);
+unsigned executeCommand(Arguments args);
 
 #endif
