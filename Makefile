@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall $(INCLUDE_PARAMS)
+CFLAGS = -Wall -Werror $(INCLUDE_PARAMS)
 INCLUDES := . shell-context execute-cmd
 INCLUDE_PARAMS := $(foreach d,$(INCLUDES),-I$d)
 SRCS := $(foreach d,$(INCLUDES),$(wildcard $d/*.c))
