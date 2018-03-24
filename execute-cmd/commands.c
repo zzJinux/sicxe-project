@@ -10,7 +10,7 @@ ShellCmd const SHELL_COMMANDS[SHELL_COMMANDS_CNT] = {
   {"dir", "d", "d[ir]", COMMAND_DIR},
   {"quit", "q", "q[uit]", COMMAND_QUIT},
   {"history", "hi", "hi[story]", COMMAND_HISTORY},
-  {"dump", "dm", "du[mp] [start, end]", COMMAND_DUMP},
+  {"dump", "du", "du[mp] [start, end]", COMMAND_DUMP},
   {"edit", "e", "e[dit] address, value", COMMAND_EDIT},
   {"fill", "f", "f[ill] start, end, value", COMMAND_FILL},
   {"reset", NULL, "reset", COMMAND_RESET},

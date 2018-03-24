@@ -1,15 +1,18 @@
+#include "execute-cmd.h"
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "execute-cmd.h"
 
 /* internal functions */
-int saveToBuffer(char *buffer, int pos, char *src, int len);
-char jumpBlank(char *str, int *pPos);
+static int saveToBuffer(char *buffer, int pos, char *src, int len);
+static char jumpBlank(char *str, int *pPos);
+static void printErrMsg(PARSE_RESULT result);
 
 // parseCommand: 명령어 텍스트를 토큰들의 배열로 파싱
-unsigned parseInput(Arguments *pArgs, char *rawCmd, int cmdLength) {
-  unsigned errorCode = 0;
+PARSE_RESULT parseInput(Arguments *pArgs, char *rawCmd, int cmdLength) {
+  PARSE_RESULT errCode = 0;
   int i=0;
   char ch;
 
@@ -25,7 +28,7 @@ unsigned parseInput(Arguments *pArgs, char *rawCmd, int cmdLength) {
   int argc = 0;
   argv = (char **)malloc(argcReserve * sizeof(char *));
   if(argv == NULL) {
-    errorCode = ALLOCATION_ERROR;
+    errCode = ALLOCATION_ERROR;
     goto cleanup;
   }
 
@@ -33,7 +36,7 @@ unsigned parseInput(Arguments *pArgs, char *rawCmd, int cmdLength) {
   // 파싱 후 문자열들의 길이의 총합은 raw input 보다 반드시 크지 못함
   buffer = (char *)malloc((cmdLength+1) * sizeof(char));
   if(buffer == NULL) {
-    errorCode = ALLOCATION_ERROR;
+    errCode = ALLOCATION_ERROR;
     goto cleanup;
   }
 
@@ -42,7 +45,7 @@ unsigned parseInput(Arguments *pArgs, char *rawCmd, int cmdLength) {
   int start = i;
   for(; !isspace(ch=rawCmd[i]) && ch != '\0'; ++i) {
     if(ch < 'a' || ch > 'z') {
-      errorCode = NOT_LOWERCASE;
+      errCode = NOT_LOWERCASE;
       goto cleanup;
     }
   }
@@ -66,7 +69,7 @@ unsigned parseInput(Arguments *pArgs, char *rawCmd, int cmdLength) {
     goto parse_end;
   }
   if(ch == ',') {
-    errorCode = INVALID_DELIMITER;
+    errCode = INVALID_DELIMITER;
     goto cleanup;
   }
 
@@ -82,7 +85,7 @@ unsigned parseInput(Arguments *pArgs, char *rawCmd, int cmdLength) {
     // if(ch == '\0') -> 문자열 끝 검사는 do-while condition 에서.
     if(ch != '\0' && ch != ',') {
       // 인자 문자열 시작점. 하지만 공백은 인자 delimiter 로 허용하지 않음 
-      errorCode = INVALID_DELIMITER;
+      errCode = INVALID_DELIMITER;
       goto cleanup;
     }
     if(ch == ',') {
@@ -90,7 +93,7 @@ unsigned parseInput(Arguments *pArgs, char *rawCmd, int cmdLength) {
       // delimiter 이후로 반드시 non-null, non-delimiter 문자가 나와야 함
       ch = jumpBlank(rawCmd, &i);
       if(ch == '\0' || ch == ',') {
-        errorCode = INVALID_DELIMITER;
+        errCode = INVALID_DELIMITER;
         goto cleanup;
       }
     }
@@ -117,7 +120,8 @@ cleanup:
   free(buffer);
   pArgs->argc = 0;
   pArgs->argv = NULL;
-  return errorCode;
+  printErrMsg(errCode);
+  return errCode;
 }
 
 void deallocArguments(Arguments args) {
@@ -141,4 +145,29 @@ char jumpBlank(char *str, int *pPos) {
   while(isspace(lastChar=str[i])) i++;
   *pPos = i;
   return lastChar;
+}
+
+static void printErrMsg(PARSE_RESULT result) {
+  if(result == 0) return;
+
+  printf("-shell: ");
+  if(result & INVALID_FORMAT) {
+    printf("syntax error, ");
+    if(result & NOT_LOWERCASE) {
+      printf("command name is lowercase only");
+    }
+    else if(result & INVALID_DELIMITER) {
+      printf("only ',' is allowed for the delimiter");
+    }
+    else {
+      printf("<unknown>");
+    }
+    putchar('\n');
+  }
+  else if(result & ALLOCATION_ERROR) {
+    printf("allocation error\n");
+  }
+  else {
+    printf("<unknown error>\n");
+  }
 }

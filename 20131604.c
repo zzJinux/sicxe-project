@@ -9,7 +9,8 @@ void flushRestInput(char *temp);
 int main() {
   ShellContextPtr pContext = initShellContext();
   if(pContext == NULL) {
-    printf("- error: dynamic memory allocation failed\n");
+    printf("- error: memory allocation failed\n");
+    return -1;
   }
 
   while(1) {
@@ -20,35 +21,9 @@ int main() {
     int len = strlen(input);
 
     Arguments args;
-    unsigned errorCode;
-    errorCode = parseInput(&args, input, len);
-
-    if(errorCode & PARSE_FAIL) {
-      errorCode &= ~PARSE_FAIL;
-      if(errorCode & INVALID_FORMAT) {
-        errorCode &= ~INVALID_FORMAT;
-        char *desc = "";
-        if(errorCode & NOT_LOWERCASE) {
-          desc = "only lowercase alphabets are allowed for command";
-        }
-        else if(errorCode & INVALID_DELIMITER) {
-          desc = "invalid delimeter between arguments";
-        }
-        printf("- error: invalid command format, %s", desc);
-      }
-      else if(errorCode & ALLOCATION_ERROR) {
-        printf("- error: dynamic memory allocation failed");
-      }
-      else {
-        printf("- error: unknown error");
-      }
-      putchar('\n');
+    PARSE_RESULT errCode = parseInput(&args, input, len);
+    if(errCode & PARSE_ERROR || errCode & COMMAND_EMPTY) {
       continue;
-    }
-    else {
-      if(errorCode & COMMAND_EMPTY) {
-        continue;
-      }
     }
 
     args.RAW = input;
@@ -57,17 +32,7 @@ int main() {
     EXIT_FLAG exitFlag = executeCommand(pContext, args);
     deallocArguments(args);
 
-    if(exitFlag & EXECUTE_ERROR) {
-      exitFlag &= ~EXECUTE_ERROR;
-      if(exitFlag & UNKNOWN_COMMAND) {
-        printf("- error: unknown command");
-      }
-      else if(exitFlag & UNKNOWN_ARGUMENT) {
-        printf("- error: unknown argument");
-      }
-      putchar('\n');
-    }
-    if(exitFlag == QUIT_SHELL) {
+    if(exitFlag & QUIT_SHELL) {
       puts("Exit sicsim...");
       break;
     }
