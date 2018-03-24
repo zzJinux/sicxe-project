@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include "shell-context/history.h"
 #include "shell-context/memory.h"
+#include "shell-context/opcode.h"
 
 static ShellCmd const SHELL_COMMANDS[] = {
   {"help", "h", "h[elp]", COMMAND_HELP},
@@ -200,10 +201,31 @@ EXIT_FLAG COMMAND_RESET(ShellContextPtr pContext, const Arguments args) {
 }
 
 EXIT_FLAG COMMAND_OPCODE(ShellContextPtr pContext, const Arguments args) {
-  // TODO
+  if(args.argc != 2) {
+    return UNKNOWN_ARGUMENT;
+  }
+
+  char *str = args.argv[1];
+  while(isupper(*str)) ++str;
+  if(*str != '\0') {
+    printf("-note: mnemonic should be lowercase alphabet\n");
+    return UNKNOWN_ARGUMENT;
+  }
+
+  int opcode = findOpcode(pContext, args.argv[1]);
+  if(opcode != -1) {
+    printf("opcode is %02X\n", opcode);
+  }
+  else {
+    printf("opcode is not defined for %s\n", str);
+  }
   return 0;
 } 
 EXIT_FLAG COMMAND_OPCODELIST(ShellContextPtr pContext, const Arguments args) {
-  // TODO
+  if(args.argc != 1) {
+    return UNKNOWN_ARGUMENT;
+  }
+
+  printOpcodeList(pContext);
   return 0;
 }

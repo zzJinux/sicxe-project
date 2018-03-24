@@ -7,7 +7,15 @@
 void flushRestInput(char *temp);
 
 int main() {
-  ShellContextPtr pContext = initShellContext();
+  FILE *opcodeRaw;
+  opcodeRaw = fopen("opcode.txt", "r");
+  if(opcodeRaw == NULL) {
+    printf("- error: file open failed\n");
+    return -1;
+  }
+
+  ShellContextPtr pContext = initShellContext(opcodeRaw);
+  fclose(opcodeRaw);
   if(pContext == NULL) {
     printf("- error: memory allocation failed\n");
     return -1;
