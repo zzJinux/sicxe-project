@@ -1,7 +1,7 @@
 #ifndef _HISTORY_H_
 #define _HISTORY_H_
 
-#include "typedefs.h"
+#include "shell-context.h"
 
 void initHistory(ShellContextPtr pContext);
 

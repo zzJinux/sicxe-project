@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <string.h>
+#include "shell-context.h"
+#include "shell-context/history.h"
 #include "commands.h"
 
 extern int const SHELL_COMMANDS_CNT;
@@ -31,6 +33,9 @@ EXIT_FLAG executeCommand(ShellContextPtr pContext, Arguments args) {
     }
   }
 
+  if(!(exitFlag & EXECUTE_ERROR) && cmdFound->commandFunc != COMMAND_HISTORY) {
+    updateHistory(pContext, args.RAW, args.RAW_LEN);
+  }
   printErrMsg(exitFlag, cmdFound);
   return exitFlag;
 }

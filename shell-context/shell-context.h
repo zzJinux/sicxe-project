@@ -3,6 +3,14 @@
 
 #include "typedefs.h"
 
+typedef struct _ShellContext {
+  HistNodePtr histRootNode;
+  HistNodePtr histCurrentNode;
+  unsigned memSize;
+  BYTE *memAddr;
+  OFFSET memIdx;
+} ShellContext, *ShellContextPtr;
+
 ShellContextPtr initShellContext();
 
 void cleanupShellContext(ShellContextPtr pContext);

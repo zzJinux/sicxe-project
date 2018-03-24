@@ -2,6 +2,12 @@
 #define _COMMANDS_H_
 
 #include "typedefs.h"
+#include "shell-context.h"
+
+typedef struct _Arguments {
+  char const *RAW; int RAW_LEN;
+  int argc; char **argv;
+} Arguments;
 
 typedef enum _EXIT_FLAG {
   QUIT_SHELL = 1<<0,
