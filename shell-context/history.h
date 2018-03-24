@@ -5,7 +5,7 @@
 
 void initHistory(ShellContextPtr pContext);
 
-HistNodePtr updateHistory(ShellContextPtr pContext, char const* text, int leng);
+HistNodePtr updateHistory(ShellContextPtr pContext, char const* text, int len);
 
 void cleanupHistory(ShellContextPtr pContext);
 

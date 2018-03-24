@@ -48,7 +48,7 @@ static void printErrMsg(EXIT_FLAG exitFlag, ShellCmd const *pCmd) {
     printf("unknown command");
   }
   else if(exitFlag & UNKNOWN_ARGUMENT) {
-    printf("unknown argument\nuseage: %s", pCmd->desc);
+    printf("wrong argument(s)\nusage: %s", pCmd->desc);
   }
   else if(exitFlag & INVALID_ARGUMENT) {
     printf("invalid argument, ");
