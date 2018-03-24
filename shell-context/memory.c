@@ -61,8 +61,8 @@ void dumpMemory(ShellContextPtr pContext, int argc, ...) {
         continue;
       }
 
-      char byte = pContext->memAddr[pos];
-      printf("%02X ", (unsigned)byte);
+      BYTE byte = pContext->memAddr[pos];
+      printf("%02X ", byte);
       asciiLine[c] =  isprint(byte) ? byte : '.';
     }
 
