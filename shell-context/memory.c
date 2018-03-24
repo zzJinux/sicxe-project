@@ -9,8 +9,8 @@
 #define DUMP_COL 16
 #define DEFAULT_BYTES 160
 
-void *initMemory(ShellContextPtr pContext, int memSize) {
-  void *memStart = malloc(memSize);
+BYTE *initMemory(ShellContextPtr pContext, int memSize) {
+  BYTE *memStart = (BYTE *)malloc(memSize);
   if(memStart == NULL) {
     return NULL;
   }

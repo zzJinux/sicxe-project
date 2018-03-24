@@ -3,7 +3,7 @@
 
 #include "shell-context.h"
 
-void *initMemory(ShellContextPtr pContext, int memSize);
+BYTE *initMemory(ShellContextPtr pContext, int memSize);
 
 void dumpMemory(ShellContextPtr pContext, int argc, ...);
 
