@@ -97,6 +97,9 @@ EXIT_FLAG COMMAND_HELP(ShellContextPtr pContext, const Arguments args) {
 }
 
 EXIT_FLAG COMMAND_DIR(ShellContextPtr pContext, const Arguments args) {
+  if(args.argc != 1) {
+    return UNKNOWN_ARGUMENT;
+  }
   printDir(".");
   return 0;
 }
