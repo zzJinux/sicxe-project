@@ -108,7 +108,6 @@ EXIT_FLAG COMMAND_QUIT(ShellContextPtr pContext, const Arguments args) {
   if(args.argc != 1) {
     return UNKNOWN_ARGUMENT;
   }
-  updateHistory(pContext, args.RAW, args.RAW_LEN);
   return QUIT_SHELL;
 }
 
