@@ -39,7 +39,8 @@ EXIT_FLAG executeCommand(ShellContextPtr pContext, Arguments args) {
   // commands.c에 정의된 전체 명령리스트에 관한 정보를 저장
   // cmdFound는 매칭된 명령을 기록하기 위한 변수
   int cmdCnt = getShellCmdCount();
-  ShellCmd const *cmdList = getShellCmdList(), *cmdFound = NULL;
+  ShellCmd const *cmdList = getShellCmdList();
+  ShellCmd *cmdFound = NULL;
 
   // 아래의 루프에서 매칭되는 명령어가 없을 경우, 이 초기값이 유지된다
   EXIT_FLAG exitFlag = UNKNOWN_COMMAND;
