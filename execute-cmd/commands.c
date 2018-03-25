@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
+#include "dir.h"
 #include "shell-context/history.h"
 #include "shell-context/memory.h"
 #include "shell-context/opcode.h"
@@ -97,11 +98,10 @@ EXIT_FLAG COMMAND_HELP(ShellContextPtr pContext, const Arguments args) {
 }
 
 EXIT_FLAG COMMAND_DIR(ShellContextPtr pContext, const Arguments args) {
-  // TODO
+  printDir(".");
   return 0;
 }
 
-// EXIT_FLAG COMMAND_DIR(ShellContextPtr, const Arguments) {}
 EXIT_FLAG COMMAND_QUIT(ShellContextPtr pContext, const Arguments args) {
   if(args.argc != 1) {
     return UNKNOWN_ARGUMENT;
