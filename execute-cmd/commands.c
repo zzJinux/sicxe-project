@@ -210,7 +210,7 @@ EXIT_FLAG COMMAND_OPCODE(ShellContextPtr pContext, const Arguments args) {
   char *str = args.argv[1];
   while(isupper(*str)) ++str;
   if(*str != '\0') {
-    printf("-note: mnemonic should be lowercase alphabet\n");
+    printf("-note: mnemonic should be uppercase alphabet\n");
     return UNKNOWN_ARGUMENT;
   }
 
