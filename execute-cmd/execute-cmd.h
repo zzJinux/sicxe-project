@@ -10,16 +10,16 @@
 
 // PARSE_RESULT, 파싱 중 발생한 예외에 대응하는 상수를 지정한 열거형
 typedef enum _PARSE_RESULT {
-  COMMAND_EMPTY = 1<<0,
-  NOT_LOWERCASE = 1<<1,
-  INVALID_DELIMITER = 1<<2,
-  ALLOCATION_ERROR = 1<<3,
-  INVALID_FORMAT = NOT_LOWERCASE | INVALID_DELIMITER,
-  PARSE_ERROR = INVALID_FORMAT | ALLOCATION_ERROR
+  COMMAND_EMPTY = 1<<0, // 빈 입력임
+  NOT_LOWERCASE = 1<<1, // 명령 이름에 소문자알파벳이 아닌 문자가 있음
+  INVALID_DELIMITER = 1<<2, // 잘못된 delimiter
+  ALLOCATION_ERROR = 1<<3, // 동적할당 중 에러
+  INVALID_FORMAT = NOT_LOWERCASE | INVALID_DELIMITER, // 입력 포맷이 잘못됨
+  PARSE_ERROR = INVALID_FORMAT | ALLOCATION_ERROR // 파싱 중 에러 발생
 } PARSE_RESULT;
 
 /** parseInput
- *  rawCmd 문자열을 파싱하여 pArgs가 가리키는 Arguments 구조체에 결과를 저장함
+ *  rawCmd 문자열을 파싱한 결과인 인자들의 배열을 pArgs가 가리키는 Arguments 구조체에 결과를 저장함
  * 
  *  @인수
  *    pArgs - 파싱 결과를 저장한 Arguments 구조체의 포인터

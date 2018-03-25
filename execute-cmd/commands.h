@@ -1,3 +1,6 @@
+/** commands.h
+ *  명령 인터페이스 함수들을 정의한 모듈 헤더
+ */
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 
@@ -14,14 +17,14 @@ typedef struct _Arguments {
 
 /* EXIT_FLAG, 명령 실행 중/후 발생한 예외에 대응하는 상수를 지정한 열거형  */
 typedef enum _EXIT_FLAG {
-  QUIT_SHELL = 1<<0,
-  UNKNOWN_COMMAND = 1<<1,
-  UNKNOWN_ARGUMENT = 1<<2,
-  OUT_OF_RANGE = 1<<3,
-  NOT_HEX = 1<<4,
-  ARGUMENT_TOO_LONG = 1<<5,
-  INVALID_ARGUMENT = OUT_OF_RANGE | NOT_HEX | ARGUMENT_TOO_LONG,
-  EXECUTE_ERROR =  UNKNOWN_COMMAND | UNKNOWN_ARGUMENT | INVALID_ARGUMENT
+  QUIT_SHELL = 1<<0, // 쉘 종료
+  UNKNOWN_COMMAND = 1<<1, // 미리 정의된 명령어 목록에 없음
+  UNKNOWN_ARGUMENT = 1<<2, // 알 수 없는 명령 인자
+  OUT_OF_RANGE = 1<<3, // 인자의 값이 허용 범위를 벗어남
+  NOT_HEX = 1<<4, // 잘못된 hexadecimal 포맷
+  ARGUMENT_TOO_LONG = 1<<5, // 인자의 길이가 필요 이상으로 김
+  INVALID_ARGUMENT = OUT_OF_RANGE | NOT_HEX | ARGUMENT_TOO_LONG, // 인자 포맷 불이치에 관한 플래그
+  EXECUTE_ERROR =  UNKNOWN_COMMAND | UNKNOWN_ARGUMENT | INVALID_ARGUMENT // 실행 중 에러 플래그
 } EXIT_FLAG;
 
 /* COMMAND_FUNC, 명령의 함수 타입 */
@@ -55,6 +58,7 @@ ShellCmd const *getShellCmdList(void);
 /** COMMAND_HELP, COMMAND_DIR, ... , COMMAND_OPCODELIST
  *  각각 help, dir, ... , opcodelist 명령들에 각각 대응되는 함수
  *  정의된 동작을 수행한다
+ *  이 함수들의 body에선 명령의 실제동작을 수행하는 함수를 호출한다
  *  
  *  첫번째 인수는 프로그램 상태, 두번째 인수는 명령 인자 구조체
  *  모두 실행 중/후 발생한 예외를 반환한다.
