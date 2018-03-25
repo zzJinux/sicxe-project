@@ -7,9 +7,6 @@
 #include "shell-context/history.h"
 #include "commands.h"
 
-extern int const SHELL_COMMANDS_CNT;
-extern ShellCmd const SHELL_COMMANDS[];
-
 static void printErrMsg(EXIT_FLAG exitFlag, ShellCmd const *pCmd);
 
 static int matchCommand(char const *str, ShellCmd cmd) {
