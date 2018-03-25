@@ -1,3 +1,6 @@
+/** dir.c
+ *  dir.h 구현
+ */
 #include "dir.h"
 
 #include <stdio.h>

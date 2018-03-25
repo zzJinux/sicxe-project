@@ -1,3 +1,6 @@
+/** 20131604.c
+ *  프로그램 진입점
+ */
 #include <stdio.h>
 #include <string.h>
 #include "shell-context.h"
