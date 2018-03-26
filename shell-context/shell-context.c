@@ -8,7 +8,7 @@
 #include "memory.h"
 #include "opcode.h"
 
-// 메모리 공간의 총 크기, 1u<<20 는 2^20, 즉 2 Mega
+// 메모리 공간의 총 크기, 1u<<20 는 2^20, 즉 1 Mega
 #define MEM_TOTAL (1u<<20)
 
 // 동적할당 중에 문제 발생 시 NULL을 반환함

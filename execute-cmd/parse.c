@@ -90,7 +90,7 @@ PARSE_RESULT parseInput(Arguments *pArgs, char *rawCmd, int cmdLength) {
     동적할당과 해제를 한 줄로 할 수 있다는 장점이 있다.
 
     예시: (@는 null terminator)
-      입력된 문자열  : command arg1,lorem,ipsum,arg2@
+      입력된 문자열 : command arg1,lorem,ipsum,arg2@
       buffer(memory): command@arg1@lorem@ipsum@arg2@
     
     입력된 문자열 배열을 그대로 쓰지 않는 이유는

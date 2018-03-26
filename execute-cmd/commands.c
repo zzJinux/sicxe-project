@@ -318,11 +318,11 @@ EXIT_FLAG COMMAND_OPCODE(ShellContextPtr pContext, const Arguments args) {
   // opcode 검색
   int opcode = findOpcode(pContext, args.argv[1]);
   if(opcode != -1) {
-    // 못찾은 경우
+    // 찾은 경우
     printf("opcode is %02X\n", opcode);
   }
   else {
-    // 찾은 경우
+    // 못찾은 경우
     printf("opcode is not defined for %s\n", str);
   }
   return 0;
