@@ -5,8 +5,8 @@
 #ifndef _EXECUTE_CMD_H_
 #define _EXECUTE_CMD_H_
 
-#include "typedefs.h"
-#include "commands.h"
+#include "./typedefs.h"
+#include "./commands.h"
 
 // PARSE_RESULT, 파싱 중 발생한 예외에 대응하는 상수를 지정한 열거형
 typedef enum _PARSE_RESULT {

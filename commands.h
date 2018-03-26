@@ -4,8 +4,8 @@
 #ifndef _COMMANDS_H_
 #define _COMMANDS_H_
 
-#include "typedefs.h"
-#include "shell-context.h"
+#include "./typedefs.h"
+#include "./shell-context.h"
 
 /* Arguments, 입력 명령의 명령, 인자를 저장한 구초제 */
 typedef struct _Arguments {

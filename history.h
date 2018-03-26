@@ -4,7 +4,7 @@
 #ifndef _HISTORY_H_
 #define _HISTORY_H_
 
-#include "shell-context.h"
+#include "./shell-context.h"
 
 /** initHistory
  *  커맨드 history 리스트 초기화 함수

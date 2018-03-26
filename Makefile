@@ -1,8 +1,6 @@
 CFLAGS = -Wall -Werror $(INCLUDE_PARAMS)
 C_DEBUG_FLAGS =
-INCLUDES := . shell-context execute-cmd
-INCLUDE_PARAMS := $(foreach d,$(INCLUDES),-I$d)
-SRCS := $(foreach d,$(INCLUDES),$(wildcard $d/*.c))
+SRCS := $(wildcard *.c)
 OBJS := $(patsubst %.c, %.o, $(SRCS))
 
 .PHONY: debug

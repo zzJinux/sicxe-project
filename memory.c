@@ -1,7 +1,7 @@
 /** memory.c
  *  memory.h 구현
  */
-#include "memory.h"
+#include "./memory.h"
 
 #include <stdio.h>
 #include <stdarg.h>

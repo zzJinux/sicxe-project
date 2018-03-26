@@ -1,14 +1,14 @@
 /** execute.c
  *  execute-cmd.h 의 executeCommand 함수 구현부
  */
-#include "execute-cmd.h"
+#include "./execute-cmd.h"
 
 #include <stdio.h>
 #include <stddef.h>
 #include <string.h>
-#include "shell-context.h"
-#include "shell-context/history.h"
-#include "commands.h"
+#include "./shell-context.h"
+#include "./history.h"
+#include "./commands.h"
 
 /** printErrMsg(내부함수)
  *  exitFlag 값에 따라 에러메시지를 출력함

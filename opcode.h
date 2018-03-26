@@ -5,7 +5,7 @@
 #define _OPCODE_H_
 
 #include <stdio.h>
-#include "shell-context.h"
+#include "./shell-context.h"
 
 /** initOpcodeList
  *  opcode 해시테이블 초기화 함수

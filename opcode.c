@@ -1,7 +1,7 @@
 /** opcode.c
  *  opcode.h 구현
  */
-#include "opcode.h"
+#include "./opcode.h"
 
 #include <stdio.h>
 #include <stdlib.h>

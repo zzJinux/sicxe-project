@@ -1,7 +1,7 @@
 /** parse.c
  *  execute-cmd.h 의 parseInput, deallocArguments 함수 구현부
  */
-#include "execute-cmd.h"
+#include "./execute-cmd.h"
 
 #include <stdio.h>
 #include <stdlib.h>

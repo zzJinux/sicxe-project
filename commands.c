@@ -7,10 +7,10 @@
 #include <string.h>
 #include <ctype.h>
 /* 명령처리에 쓰일 모듈들을 모두 불러옴 */
-#include "dir.h"
-#include "shell-context/history.h"
-#include "shell-context/memory.h"
-#include "shell-context/opcode.h"
+#include "./dir.h"
+#include "./history.h"
+#include "./memory.h"
+#include "./opcode.h"
 
 /* 미리 정의된 명령들의 레코드 */
 static ShellCmd const SHELL_COMMANDS[] = {

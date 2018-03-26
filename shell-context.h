@@ -5,7 +5,7 @@
 #define _SHELL_CONTEXT_H_
 
 #include <stdio.h>
-#include "typedefs.h"
+#include "./typedefs.h"
 
 /* ShellContext 구조체, 프로그램 상태를 저장함 */
 typedef struct _ShellContext {

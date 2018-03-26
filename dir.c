@@ -1,13 +1,13 @@
 /** dir.c
  *  dir.h 구현
  */
-#include "dir.h"
+#include "./dir.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "dirent.h"
-#include "sys/stat.h"
+#include <dirent.h>
+#include <sys/stat.h>
 
 #define MAX_WIDTH (128)
 

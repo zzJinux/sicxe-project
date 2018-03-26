@@ -4,7 +4,7 @@
 #ifndef _SIM_MEMORY_H_
 #define _SIM_MEMORY_H_
 
-#include "shell-context.h"
+#include "./shell-context.h"
 
 /** initMemory
  *  메모리 공간 생성/할당 함수

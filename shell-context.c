@@ -1,12 +1,12 @@
 /** shell-context.c
  * shell-context.h 구현
  */
-#include "shell-context.h"
+#include "./shell-context.h"
 
 #include <stdlib.h>
-#include "history.h"
-#include "memory.h"
-#include "opcode.h"
+#include "./history.h"
+#include "./memory.h"
+#include "./opcode.h"
 
 // 메모리 공간의 총 크기, 1u<<20 는 2^20, 즉 1 Mega
 #define MEM_TOTAL (1u<<20)
