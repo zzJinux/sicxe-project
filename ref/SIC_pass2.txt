@@ -1,0 +1,47 @@
+
+read first input line (from intermediate file)
+if OPCODE = 'START'
+	write listing line
+	read next input line
+endif
+
+write Header record to object program
+initialize first Text record
+while OPCODE != 'END' do
+	if this is a comment line; then goto :done:
+	search OPTAB for OPCODE
+
+	if found
+		if there is a symbol in OPERAND field
+			search SYMTAB for OPERAND
+			if found
+				start symbl value as operand address
+			else
+				store 0 as operand address
+				set error flag (undefined symbol)
+			endif
+		else
+			store 0 as operand address
+		endif
+		
+		assemble the object code instruction
+	elif OPCODE = 'BYTE' or 'WORD'
+		convert constant to object code
+	endif
+	
+	if object code will not fit into the current Text Record
+		write Text record to object program
+		initialize new Text record
+	endif
+	
+	add object code to Text record
+	
+	<:done:>
+	write listing line
+	read next input line
+endloop
+
+write last Text record to object program
+write End record to object program
+write last lilsting line
+		
