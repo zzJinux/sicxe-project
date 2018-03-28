@@ -23,7 +23,8 @@ static ShellCmd const SHELL_COMMANDS[] = {
   {"fill", "f", "f[ill] start, end, value", COMMAND_FILL},
   {"reset", NULL, "reset", COMMAND_RESET},
   {"opcode", NULL, "opcode mnemoic", COMMAND_OPCODE},
-  {"opcodelist", NULL, "opcodelist", COMMAND_OPCODELIST}
+  {"opcodelist", NULL, "opcodelist", COMMAND_OPCODELIST},
+  {"type", NULL, "type filename", COMMAND_TYPE}
 };
 
 /*
@@ -335,5 +336,24 @@ EXIT_FLAG COMMAND_OPCODELIST(ShellContextPtr pContext, const Arguments args) {
   }
 
   printOpcodeList(pContext);
+  return 0;
+}
+
+EXIT_FLAG COMMAND_TYPE(ShellContextPtr pContext, const Arguments args) {
+  if(args.argc != 2) {
+    return UNKNOWN_ARGUMENT;
+  }
+
+  FILE *stream = fopen(args.argv[1], "r");
+  if(stream == NULL) {
+    printf("-type: error opening file\n");
+    return INTERNAL_COMMAND_ERROR;
+  }
+
+  int ch;
+  while((ch=fgetc(stream)) != EOF) {
+    putchar(ch);
+  }
+
   return 0;
 }
