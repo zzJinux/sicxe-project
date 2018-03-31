@@ -24,6 +24,7 @@ static ShellCmd const SHELL_COMMANDS[] = {
   {"reset", NULL, "reset", COMMAND_RESET},
   {"opcode", NULL, "opcode mnemoic", COMMAND_OPCODE},
   {"opcodelist", NULL, "opcodelist", COMMAND_OPCODELIST},
+  {"assemble", NULL, "assemble filename", COMMAND_ASSEMBLE},
   {"type", NULL, "type filename", COMMAND_TYPE}
 };
 

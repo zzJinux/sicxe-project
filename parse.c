@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include "./util.h"
 
 /** saveToBuffer(내부함수)
  *  buffer + pos 위치부터 len 길이의 문자열을 src 로부터 복사 후
@@ -22,18 +23,6 @@
  *    buffer에 복사할 다음 위치
  */
 static int saveToBuffer(char *buffer, int pos, char *src, int len);
-
-/** jumpBlank(내부함수)
- *  연속된 공백문자들을 건너뛰는 함수
- * 
- *  @인수
- *    str - 대상 문자열
- *    pPos - 연속 공백 문자열의 시작 인덱스 (반환용 포인터)
- * 
- *  @반환
- *    마지막 공백문자 다음의 문자
- */
-static char jumpBlank(char *str, int *pPos);
 
 /** printErrMsg
  *  result 값에 따라 에러메시지를 출력함
@@ -227,15 +216,6 @@ int saveToBuffer(char *buffer, int pos, char *src, int len) {
   buffer += len; // null 문자를 저장할 위치로 계산
   *buffer = '\0'; // null-terminator 기록
   return pos + len + 1; // 다음 복사 위치, null-terminator 다음 위치를 반환
-}
-
-char jumpBlank(char *str, int *pPos) {
-  char lastChar;
-  int i = *pPos;
-  // 마지막 문자를 저장하면서 공백이 안나올 때까지 i 증가
-  while(isspace(lastChar=str[i])) i++;
-  *pPos = i; // i 반환
-  return lastChar;
 }
 
 static void printErrMsg(PARSE_RESULT result) {

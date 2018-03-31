@@ -7,6 +7,7 @@
 #define MNEMONIC_MAXLEN (6) 
 #define HASH_TABLE_SIZE (20)
 
+typedef unsigned ERROR_CODE;
 typedef unsigned OFFSET;
 typedef unsigned char BYTE;
 

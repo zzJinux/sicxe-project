@@ -23,7 +23,7 @@ typedef enum _EXIT_FLAG {
   OUT_OF_RANGE = 1<<3, // 인자의 값이 허용 범위를 벗어남
   NOT_HEX = 1<<4, // 잘못된 hexadecimal 포맷
   ARGUMENT_TOO_LONG = 1<<5, // 인자의 길이가 필요 이상으로 김
-
+  
   INTERNAL_COMMAND_ERROR = 1<<6, 
   INVALID_ARGUMENT = OUT_OF_RANGE | NOT_HEX | ARGUMENT_TOO_LONG, // 인자 포맷 불이치에 관한 플래그
   EXECUTE_ERROR =  UNKNOWN_COMMAND | UNKNOWN_ARGUMENT | INVALID_ARGUMENT | INTERNAL_COMMAND_ERROR // 실행 중 에러 플래그
@@ -76,7 +76,9 @@ EXIT_FLAG COMMAND_FILL(ShellContextPtr, const Arguments);
 EXIT_FLAG COMMAND_RESET(ShellContextPtr, const Arguments);
 EXIT_FLAG COMMAND_OPCODE(ShellContextPtr, const Arguments);
 EXIT_FLAG COMMAND_OPCODELIST(ShellContextPtr, const Arguments);
-
 EXIT_FLAG COMMAND_TYPE(ShellContextPtr, const Arguments);
+
+// cmd_assemble.c
+EXIT_FLAG COMMAND_ASSEMBLE(ShellContextPtr, const Arguments);
 
 #endif
