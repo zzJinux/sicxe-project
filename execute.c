@@ -90,6 +90,9 @@ static void printErrMsg(EXIT_FLAG exitFlag, ShellCmd const *pCmd) {
     else if(exitFlag & ARGUMENT_TOO_LONG) {
       printf("argument too long");
     }
+    else if(exitFlag & INTERNAL_COMMAND_ERROR) {
+      // empty
+    }
     else {
       printf("<unknown>");
     }
