@@ -318,7 +318,7 @@ EXIT_FLAG COMMAND_OPCODE(ShellContextPtr pContext, const Arguments args) {
   }
 
   // opcode 검색
-  int opcode = findOpcode(pContext, args.argv[1]);
+  int opcode = findOpcode(pContext->opcodeTable, args.argv[1]);
   if(opcode != -1) {
     // 찾은 경우
     printf("opcode is %02X\n", opcode);
@@ -336,7 +336,7 @@ EXIT_FLAG COMMAND_OPCODELIST(ShellContextPtr pContext, const Arguments args) {
     return UNKNOWN_ARGUMENT;
   }
 
-  printOpcodeList(pContext);
+  printOpcodeList(pContext->opcodeTable);
   return 0;
 }
 

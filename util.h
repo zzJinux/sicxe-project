@@ -2,13 +2,23 @@
 #define _UTIL_H_
 
 #include <stdio.h>
+#include "./typedefs.h"
 
 typedef struct _LinkedListNode {
   void *key;
   struct _LinkedListNode *next;
 } LLNode, *LLNodePtr;
 
-LLNodePtr *initHashTable(int size);
+typedef struct _HashTable {
+  int size;
+  LLNodePtr *buckets;
+} HashTable;
+
+HashTable *initHashTable(int size);
+
+void cleanupHashTable(HashTable *table, void (*cleanupKey)(void *));
+
+unsigned hash_adler32(char const *text, int mod);
 
 /** jumpBlank
  *  연속된 공백문자들을 건너뛰는 함수
@@ -21,8 +31,6 @@ LLNodePtr *initHashTable(int size);
  *    마지막 공백문자 다음의 문자
  */
 char jumpBlank(char *str, int *pPos);
-
-int hash_adler32(char const *text, int mod);
 
 char *freadLine(FILE *stream);
 

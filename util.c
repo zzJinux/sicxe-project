@@ -4,16 +4,33 @@
 #include <ctype.h>
 #include <stdlib.h>
 
-LLNodePtr *initHashTable(int size) {
-  LLNodePtr *table = malloc(size * sizeof(LLNodePtr));
-  if(table == NULL) return NULL;
+HashTable *initHashTable(int size) {
+  HashTable *ht = malloc(sizeof(HashTable));
+  LLNodePtr *buckets = malloc(size * sizeof(LLNodePtr));
+  if(ht == NULL || buckets == NULL) return NULL;
 
   int i;
   for(i=0; i<size; ++i) {
-    table[i] = NULL;
+    buckets[i] = NULL;
   }
+  ht->size = size;
+  ht->buckets = buckets;
 
-  return table;
+  return ht;
+}
+
+void cleanupHashTable(HashTable *table, void (*cleanupKey)(void *)) {
+  int i, size;
+  for(i=0, size=table->size; i<size; ++i) {
+    LLNodePtr p = table->buckets[i], n;
+    while(p != NULL) {
+      n = p->next;
+      cleanupKey(p->key);
+      free(p);
+      p = n;
+    }
+  }
+  free(table);
 }
 
 char jumpBlank(char *str, int *pPos) {
@@ -35,7 +52,7 @@ char jumpBlank(char *str, int *pPos) {
  *  @반환
  *    [0, mod)으로 reduce된 해시값
  */
-int hash_adler32(char const *text, int mod) {
+unsigned hash_adler32(char const *text, int mod) {
   unsigned a=1, b=0;
   char c;
   while((c=*text++) != '\0') {

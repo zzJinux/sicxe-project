@@ -27,8 +27,8 @@ ShellContextPtr initShellContext(FILE *stream) {
   }
 
   // stream 으로부터 opcode 정보를 읽어 해시테이블 초기화
-  OpcodeHashNodePtr *pNodeList = initOpcodeList(pContext, stream);
-  if(pNodeList == NULL) {
+  pContext->opcodeTable = initOpcodeList(stream);
+  if(pContext->opcodeTable == NULL) {
     return NULL;
   }
 
@@ -38,6 +38,6 @@ ShellContextPtr initShellContext(FILE *stream) {
 void cleanupShellContext(ShellContextPtr pContext) {
   cleanupHistory(pContext);
   cleanupMemory(pContext);
-  cleanupOpcodeList(pContext);
+  cleanupOpcodeList(pContext->opcodeTable);
   free(pContext);
 }

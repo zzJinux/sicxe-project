@@ -5,6 +5,7 @@
 #define _SHELL_CONTEXT_H_
 
 #include <stdio.h>
+#include "./util.h"
 #include "./typedefs.h"
 
 /* ShellContext 구조체, 프로그램 상태를 저장함 */
@@ -17,7 +18,7 @@ typedef struct _ShellContext {
   OFFSET memIdx; // dump 커맨드에 의해 현재 가리키는 주소 offset
 
   // opcode 리스트를 저장하는 해시테이블
-  OpcodeHashNodePtr opcodeHashTable[HASH_TABLE_SIZE];
+  HashTable *opcodeTable;
 } ShellContext, *ShellContextPtr;
 
 /** initShellContext

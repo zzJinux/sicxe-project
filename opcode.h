@@ -5,6 +5,7 @@
 #define _OPCODE_H_
 
 #include <stdio.h>
+#include "./util.h"
 #include "./shell-context.h"
 
 /** initOpcodeList
@@ -17,7 +18,7 @@
  *  @반환
  *    에러 발생 시 NULL, 성공 시 해시테이블 포인터
  */
-OpcodeHashNodePtr *initOpcodeList(ShellContextPtr pContext, FILE *stream);
+HashTable *initOpcodeList(FILE *stream);
 
 /** findOpcode
  *  mnemonic의 opcode를 찾는 함수
@@ -29,7 +30,7 @@ OpcodeHashNodePtr *initOpcodeList(ShellContextPtr pContext, FILE *stream);
  *  @반환
  *    찾은 mnemonic의 opcode, 실패 시 -1
  */
-int findOpcode(ShellContextPtr pContext, char const *pat);
+int findOpcode(HashTable *hashTable, char const *pat);
 
 /** printOpcodeList
  *  opcode 해시테이블을 visual하게 출력
@@ -37,7 +38,7 @@ int findOpcode(ShellContextPtr pContext, char const *pat);
  *  @인수
  *    pContext - 프로그램 상태
  */
-void printOpcodeList(ShellContextPtr pContext);
+void printOpcodeList(HashTable *hashTable);
 
 /** cleanupOpcodeList
  *  opcode 해시테이블이 점유한 자원 해제
@@ -45,6 +46,6 @@ void printOpcodeList(ShellContextPtr pContext);
  *  @인수
  *    pContext - 프로그램 상태
  */
-void cleanupOpcodeList(ShellContextPtr pContext);
+void cleanupOpcodeList(HashTable *hashTable);
 
 #endif
