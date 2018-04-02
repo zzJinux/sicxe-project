@@ -36,6 +36,7 @@ void emptyHashTable(HashTable *table, void (*cleanupKey)(void *)) {
 }
 
 void cleanupHashTable(HashTable *table, void (*cleanupKey)(void *)) {
+  if(table == NULL) return;
   emptyHashTable(table, cleanupKey);
   free(table->buckets);
   free(table);
