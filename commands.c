@@ -46,14 +46,14 @@ ShellCmd const *getShellCmdList() {
 }
 
 /** parseHex_u20(내부함수)
- *  hex에 저장된 문자열을 hexadecimal로 간주하고 최대 5byte의 정수로 파싱
+ *  hex에 저장된 문자열을 hexadecimal로 간주하고 최대 20bit의 정수로 파싱
  * 
  *  @인수
  *    hex - 파싱할 hexadecimal 문자열
  *    p - 계산결과 반환 포인터
  * 
  *  @반환
- *    파싱 중 발생한 에러. 5byte를 넘는 정수거나 미리 정의된 포맷이 아닌 경우가 있음
+ *    파싱 중 발생한 에러. 20bit를 넘는 정수거나 미리 정의된 포맷이 아닌 경우가 있음
  */
 static EXIT_FLAG parseHex_u20(char const *hex, unsigned *p) {
   unsigned x = 0;
@@ -64,7 +64,7 @@ static EXIT_FLAG parseHex_u20(char const *hex, unsigned *p) {
     x = x*16 + c - (c < 'A' ? '0' : (c < 'a' ? 'A' : 'a') - 10); 
   }
   if(c != '\0') {
-    // 5byte를 파싱하고도 문자열이 안끝났으므로 너무 큰 값임
+    // 20bit를 파싱하고도 문자열이 안끝났으므로 너무 큰 값임
     if(i>=5) return ARGUMENT_TOO_LONG;
     // 중간에 [0-9a-zA-Z] 가 아닌 값이 있음
     else return NOT_HEX;
