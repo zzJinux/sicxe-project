@@ -11,6 +11,7 @@
 #include "./history.h"
 #include "./memory.h"
 #include "./opcode.h"
+#include "./util.h"
 
 /* 미리 정의된 명령들의 레코드 */
 static ShellCmd const SHELL_COMMANDS[] = {
@@ -45,34 +46,6 @@ ShellCmd const *getShellCmdList() {
   return SHELL_COMMANDS;
 }
 
-/** parseHex_u20(내부함수)
- *  hex에 저장된 문자열을 hexadecimal로 간주하고 최대 20bit의 정수로 파싱
- * 
- *  @인수
- *    hex - 파싱할 hexadecimal 문자열
- *    p - 계산결과 반환 포인터
- * 
- *  @반환
- *    파싱 중 발생한 에러. 20bit를 넘는 정수거나 미리 정의된 포맷이 아닌 경우가 있음
- */
-static EXIT_FLAG parseHex_u20(char const *hex, unsigned *p) {
-  unsigned x = 0;
-  char c;
-  int i;
-  // hexadecimal 값 계산
-  for(i=0; isxdigit(c=hex[i]) && i<5; ++i) {
-    x = x*16 + c - (c < 'A' ? '0' : (c < 'a' ? 'A' : 'a') - 10); 
-  }
-  if(c != '\0') {
-    // 20bit를 파싱하고도 문자열이 안끝났으므로 너무 큰 값임
-    if(i>=5) return ARGUMENT_TOO_LONG;
-    // 중간에 [0-9a-zA-Z] 가 아닌 값이 있음
-    else return NOT_HEX;
-  }
-  *p = x;
-  return 0;
-}
-
 /** parseAddrPoint(내부함수)
  *  str을 hexadecimal offset 문자열로 보고 파싱,검사 후 *p에 저장
  * 
@@ -85,10 +58,13 @@ static EXIT_FLAG parseHex_u20(char const *hex, unsigned *p) {
  *    수행 중 에러
  */
 static EXIT_FLAG parseAddrPoint(OFFSET *p, char const* str, OFFSET BOUNDARY) {
-  EXIT_FLAG f = parseHex_u20(str, p);
+  NUMBER_PARSE_ERROR f = parseHex_u20(str, p);
   // 파싱 실패
-  if(f & INVALID_ARGUMENT) {
-    return f;
+  if(f == INVALID_NUMBER_FORMAT) {
+    return NOT_HEX;
+  }
+  else if(f == NUMBER_TOO_LONG) {
+    return ARGUMENT_TOO_LONG;
   }
   // offset이 boundary를 넘어섰음
   if(*p >= BOUNDARY) {
@@ -141,12 +117,15 @@ static EXIT_FLAG parseAddrRange(OFFSET *ps, OFFSET *pe, char const *s_start, cha
  *    수행 중 에러
  */
 static EXIT_FLAG parseByte(BYTE *p, char const *str) {
-  EXIT_FLAG f;
   unsigned x;
-  f = parseHex_u20(str, &x);
-  if(f & INVALID_ARGUMENT) {
-    return f;
+  NUMBER_PARSE_ERROR f = parseHex_u20(str, &x);
+  if(f == INVALID_NUMBER_FORMAT) {
+    return NOT_HEX;
   }
+  else if(f == NUMBER_TOO_LONG) {
+    return ARGUMENT_TOO_LONG;
+  }
+
   // 값이 BYTE 범위를 넘어서므로 에러로 처리
   if(x > 0xFF) {
     return OUT_OF_RANGE;

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <stdlib.h>
+#include "typedefs.h"
 
 HashTable *initHashTable(int size) {
   HashTable *ht = malloc(sizeof(HashTable));
@@ -62,6 +63,23 @@ unsigned hash_adler32(char const *text, int mod) {
   return (b<<16|a) % mod;
 }
 
+NUMBER_PARSE_ERROR parseHex_u20(char const *hex, unsigned *p) {
+  unsigned x = 0;
+  char c;
+  int i;
+  // hexadecimal 값 계산
+  for(i=0; isxdigit(c=hex[i]) && i<5; ++i) {
+    x = x*16 + c - (c < 'A' ? '0' : (c < 'a' ? 'A' : 'a') - 10); 
+  }
+  if(c != '\0') {
+    // 20bit를 파싱하고도 문자열이 안끝났으므로 너무 큰 값임
+    if(i>=5) return NUMBER_TOO_LONG;
+    // 중간에 [0-9a-zA-Z] 가 아닌 값이 있음
+    else return INVALID_NUMBER_FORMAT;
+  }
+  *p = x;
+  return 0;
+}
 
 char *freadLine(FILE* stream) {
   int incSize = 16, reserved = 64, len = 0;

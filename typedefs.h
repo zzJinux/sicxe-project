@@ -8,6 +8,11 @@ typedef unsigned ERROR_CODE;
 typedef unsigned OFFSET;
 typedef unsigned char BYTE;
 
+typedef enum _NUMBER_PARSE_ERROR {
+  INVALID_NUMBER_FORMAT = 1,
+  NUMBER_TOO_LONG
+} NUMBER_PARSE_ERROR;
+
 /* HistNode, history 의 LinkedList 노드 */
 typedef struct _HistNode {
   char *text;
