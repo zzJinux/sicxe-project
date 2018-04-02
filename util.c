@@ -96,12 +96,11 @@ char *freadLine(FILE* stream) {
   if(str == NULL) return NULL;
   while((ch=fgetc(stream)) != '\n' && ch != EOF) {
     str[len++] = ch;
-    if(len+1 >= reserved) {
+    if(len+1 > reserved) {
       str = realloc(str, reserved+=incSize);
       if(str == NULL) return NULL;
     }
   }
-  if(ch == '\n') fgetc(stream);
   str = realloc(str, len+1);
   str[len] = 0;
 
