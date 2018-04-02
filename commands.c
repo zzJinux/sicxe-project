@@ -11,6 +11,7 @@
 #include "./history.h"
 #include "./memory.h"
 #include "./opcode.h"
+#include "./symtab.h"
 #include "./util.h"
 
 /* 미리 정의된 명령들의 레코드 */
@@ -26,6 +27,7 @@ static ShellCmd const SHELL_COMMANDS[] = {
   {"opcode", NULL, "opcode mnemoic", COMMAND_OPCODE},
   {"opcodelist", NULL, "opcodelist", COMMAND_OPCODELIST},
   {"assemble", NULL, "assemble filename", COMMAND_ASSEMBLE},
+  {"symbol", NULL, "symbol", COMMAND_SYMBOL},
   {"type", NULL, "type filename", COMMAND_TYPE}
 };
 
@@ -316,6 +318,20 @@ EXIT_FLAG COMMAND_OPCODELIST(ShellContextPtr pContext, const Arguments args) {
   }
 
   printOpcodeList(pContext->opcodeTable);
+  return 0;
+}
+
+EXIT_FLAG COMMAND_SYMBOL(ShellContextPtr pContext, const Arguments args) {
+  if(args.argc != 1) {
+    return UNKNOWN_ARGUMENT;
+  }
+
+  int ret = printSymbolTable(pContext->symbolTable);
+  if(ret == -1) {
+    printf("-symbol: allocation fail while print\n");
+    return INTERNAL_COMMAND_ERROR;
+  }
+
   return 0;
 }
 

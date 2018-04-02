@@ -19,6 +19,7 @@ typedef struct _ShellContext {
 
   // opcode 리스트를 저장하는 해시테이블
   HashTable *opcodeTable;
+  HashTable *symbolTable;
 } ShellContext, *ShellContextPtr;
 
 /** initShellContext

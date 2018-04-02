@@ -7,6 +7,7 @@
 #include "./history.h"
 #include "./memory.h"
 #include "./opcode.h"
+#include "./symtab.h"
 
 // 메모리 공간의 총 크기, 1u<<20 는 2^20, 즉 1 Mega
 #define MEM_TOTAL (1u<<20)
@@ -32,6 +33,11 @@ ShellContextPtr initShellContext(FILE *stream) {
     return NULL;
   }
 
+  pContext->symbolTable = initSymbolTable();
+  if(pContext->symbolTable == NULL) {
+    return NULL;
+  }
+
   return pContext;
 }
 
@@ -39,5 +45,6 @@ void cleanupShellContext(ShellContextPtr pContext) {
   cleanupHistory(pContext);
   cleanupMemory(pContext);
   cleanupOpcodeList(pContext->opcodeTable);
+  cleanupSymbolTable(pContext->symbolTable);
   free(pContext);
 }

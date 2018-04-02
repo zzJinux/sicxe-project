@@ -76,6 +76,7 @@ EXIT_FLAG COMMAND_FILL(ShellContextPtr, const Arguments);
 EXIT_FLAG COMMAND_RESET(ShellContextPtr, const Arguments);
 EXIT_FLAG COMMAND_OPCODE(ShellContextPtr, const Arguments);
 EXIT_FLAG COMMAND_OPCODELIST(ShellContextPtr, const Arguments);
+EXIT_FLAG COMMAND_SYMBOL(ShellContextPtr, const Arguments);
 EXIT_FLAG COMMAND_TYPE(ShellContextPtr, const Arguments);
 
 // cmd_assemble.c
