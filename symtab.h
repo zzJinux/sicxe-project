@@ -16,6 +16,8 @@ LLNodePtr addSymbol(HashTable *symtab, char const *sym, int loc);
 
 int printSymbolTable(HashTable *symtab);
 
+void emptySymbolTable(HashTable *symtab);
+
 void cleanupSymbolTable(HashTable *symtab);
 
 #endif
