@@ -50,22 +50,50 @@ LLNodePtr addSymbol(HashTable *symtab, char const *sym, int loc) {
   return nn;
 }
 
-void printSymbolTable(HashTable *symtab) {
+static int SymbolDefCmp(const void *a, const void *b) {
+  return strcmp((*(SymbolDef **)a)->name, (*(SymbolDef **)b)->name);
+}
+
+int printSymbolTable(HashTable *symtab) {
   int sz = symtab->size;
-  int i;
-  for(i=0; i<sz; ++i) {
+  int i, cnt;
+  for(i=0, cnt=0; i<sz; ++i) {
     LLNodePtr p = symtab->buckets[i];
     while(p != NULL) {
-      SymbolDef *key = p->key;
-      printf("\t%s\t%04X\n", key->name, key->loc);
+      ++cnt;
       p = p->next;
     }
   }
+
+  SymbolDef **sortArr = malloc(cnt * sizeof(SymbolDef *));
+  if(sortArr == NULL) {
+    return -1;
+  }
+
+  for(i=0, cnt=0; i<sz; ++i) {
+    LLNodePtr p = symtab->buckets[i];
+    while(p != NULL) {
+      sortArr[cnt++] = p->key;
+      p = p->next;
+    }
+  }
+
+  qsort(sortArr, cnt, sizeof(SymbolDef *), SymbolDefCmp);
+  for(i=0; i<cnt; ++i) {
+    printf("\t%s\t%04X\n", sortArr[i]->name, sortArr[i]->loc);
+  }
+
+  free(sortArr);
+  return 0;
 }
 
 static void cleanupSymbol(SymbolDef *sym) {
   free((void *)sym->name);
   free(sym);
+}
+
+void emptySymbolTable(HashTable *symtab) {
+  emptyHashTable(symtab, (CLEANUP_FUNC)cleanupSymbol);
 }
 
 void cleanupSymbolTable(HashTable *symtab) {
