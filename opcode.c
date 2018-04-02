@@ -19,11 +19,11 @@ typedef enum _OPCODE_FORMAT {
 
 typedef struct _OpcodeDef {
   char mn[MNEMONIC_MAXLEN+1];
-  int hex;
+  BYTE hex;
   OPCODE_FORMAT fm;
 } OpcodeDef;
 
-static LLNodePtr createNode(int opcode, char const mnemonic[], OPCODE_FORMAT fm) {
+static LLNodePtr createNode(BYTE opcode, char const mnemonic[], OPCODE_FORMAT fm) {
   LLNodePtr p = malloc(sizeof(LLNode));
   OpcodeDef *key = malloc(sizeof(OpcodeDef));
   if(p == NULL || key == NULL) return NULL;
@@ -63,7 +63,7 @@ HashTable *initOpcodeList(FILE *stream) {
 
     LLNodePtr newNode, pNode;
     // 새 노드 동적할당
-    newNode = createNode(opcode, mnemonic, format == 1 ? FORMAT1 : format == 2 ? FORMAT2 : FORMAT34);
+    newNode = createNode((BYTE)opcode, mnemonic, format == 1 ? FORMAT1 : format == 2 ? FORMAT2 : FORMAT34);
     if(newNode == NULL) {
       return NULL;
     }
