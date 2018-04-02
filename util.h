@@ -18,6 +18,8 @@ typedef struct _HashTable {
 
 HashTable *initHashTable(int size);
 
+void emptyHashTable(HashTable *table, void (*cleanupKey)(void *));
+
 void cleanupHashTable(HashTable *table, void (*cleanupKey)(void *));
 
 unsigned hash_adler32(char const *text, int mod);

@@ -20,7 +20,8 @@ HashTable *initHashTable(int size) {
   return ht;
 }
 
-void cleanupHashTable(HashTable *table, void (*cleanupKey)(void *)) {
+void emptyHashTable(HashTable *table, void (*cleanupKey)(void *)) {
+  if(table == NULL) return;
   int i, size;
   for(i=0, size=table->size; i<size; ++i) {
     LLNodePtr p = table->buckets[i], n;
@@ -30,7 +31,13 @@ void cleanupHashTable(HashTable *table, void (*cleanupKey)(void *)) {
       free(p);
       p = n;
     }
+    table->buckets[i] = NULL;
   }
+}
+
+void cleanupHashTable(HashTable *table, void (*cleanupKey)(void *)) {
+  emptyHashTable(table, cleanupKey);
+  free(table->buckets);
   free(table);
 }
 
@@ -105,12 +112,17 @@ int getTokenSize(char const *src) {
   int inQ = 0;
   char ch;
   char const *begin = src;
-  while((!isspace(ch=*src) || inQ) && !!ch) {
+  while((!isspace(ch=*src) || (ch!='\n' && inQ)) && !!ch) {
     // string literal quote detected
     if(ch == '\'') {
       inQ = !inQ;
     }
     ++src;
+  }
+
+  // open-quote error
+  if(inQ) {
+    return -1;
   }
   return src - begin;
 }
@@ -118,7 +130,7 @@ int getTokenSize(char const *src) {
 char const *copyToken(char *dest, char const *src) {
   int inQ = 0;
   char ch;
-  while((!isspace(ch=*src) || inQ) && !!*src) {
+  while((!isspace(ch=*src) || (ch!='\n' && inQ)) && !!ch) {
     if(ch == '\'') {
       inQ = !inQ;
     }
@@ -130,8 +142,11 @@ char const *copyToken(char *dest, char const *src) {
 
 char *readToken(char const *text, int *pLen) {
   int len = getTokenSize(text);
+  *pLen = len;
+  if(len == -1) {
+    return NULL;
+  }
   char *str = malloc(len+1);
   copyToken(str, text);
-  *pLen = len;
   return str;
 }
