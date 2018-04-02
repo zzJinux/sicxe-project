@@ -102,13 +102,28 @@ char *freadLine(FILE* stream) {
 }
 
 int getTokenSize(char const *src) {
+  int inQ = 0;
+  char ch;
   char const *begin = src;
-  while(!isspace(*src) && !!*src) ++src;
+  while((!isspace(ch=*src) || inQ) && !!ch) {
+    // string literal quote detected
+    if(ch == '\'') {
+      inQ = !inQ;
+    }
+    ++src;
+  }
   return src - begin;
 }
 
 char const *copyToken(char *dest, char const *src) {
-  while(!isspace(*src) && !!*src) *dest++ = *src++;
+  int inQ = 0;
+  char ch;
+  while((!isspace(ch=*src) || inQ) && !!*src) {
+    if(ch == '\'') {
+      inQ = !inQ;
+    }
+    *dest++ = *src++;
+  }
   *dest = '\0';
   return src;
 }
