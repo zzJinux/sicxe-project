@@ -43,7 +43,7 @@ HashTable *initOpcodeList(FILE *stream) {
   // stream 으로부터 opcode, mnemonic 을 입력받음 format은 무시(추후 구현)
   // fscanf 의 반환값은 성공적으로 입력받은 포맷입력의 개수, 2개를 입력받지 못하면
   // 입력의 끝으로 간주하고 종료한다
-  while(fscanf(stream, " %x %s %d %*[^\n] ", &opcode, mnemonic, &format) == 3) {
+  while(fscanf(stream, " %x %s %d%*[^\n] ", &opcode, mnemonic, &format) == 3) {
     int h = hash_adler32(mnemonic, OPCODE_TABLE_SIZE);
     // dpNode에 노드가 들어갈 해시테이블의 bucket의 포인터를 저장
     LLNodePtr *dpNode = ht->buckets + h;
