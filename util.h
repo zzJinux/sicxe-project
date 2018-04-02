@@ -46,7 +46,7 @@ NUMBER_PARSE_ERROR parseHex_u20(char const *hex, unsigned *p);
  *  @반환
  *    마지막 공백문자 다음의 문자
  */
-char jumpBlank(char *str, int *pPos);
+char jumpBlank(char const *str, int *pPos);
 
 char *freadLine(FILE *stream);
 

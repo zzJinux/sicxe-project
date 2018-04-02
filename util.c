@@ -41,7 +41,7 @@ void cleanupHashTable(HashTable *table, void (*cleanupKey)(void *)) {
   free(table);
 }
 
-char jumpBlank(char *str, int *pPos) {
+char jumpBlank(char const *str, int *pPos) {
   char lastChar;
   int i = *pPos;
   // 마지막 문자를 저장하면서 공백이 안나올 때까지 i 증가
