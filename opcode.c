@@ -9,19 +9,6 @@
 #include "./util.h"
 
 #define OPCODE_TABLE_SIZE 20
-#define MNEMONIC_MAXLEN 6
-
-typedef enum _OPCODE_FORMAT {
-  FORMAT1 = 1,
-  FORMAT2 = 2,
-  FORMAT34 = 3
-} OPCODE_FORMAT;
-
-typedef struct _OpcodeDef {
-  char mn[MNEMONIC_MAXLEN+1];
-  BYTE hex;
-  OPCODE_FORMAT fm;
-} OpcodeDef;
 
 static LLNodePtr createNode(BYTE opcode, char const mnemonic[], OPCODE_FORMAT fm) {
   LLNodePtr p = malloc(sizeof(LLNode));
@@ -83,7 +70,7 @@ HashTable *initOpcodeList(FILE *stream) {
   return ht;
 }
 
-int findOpcode(HashTable *hashTable, char const *pat) {
+OpcodeDef *findOpcode(HashTable *hashTable, char const *pat) {
   int h = hash_adler32(pat, OPCODE_TABLE_SIZE);
   // 해시값으로부터 bucket 을 받아옴
   LLNodePtr pNode = hashTable->buckets[h];
@@ -91,14 +78,14 @@ int findOpcode(HashTable *hashTable, char const *pat) {
   while(pNode != NULL) {
     OpcodeDef *key = pNode->key;
     if(strcmp(key->mn, pat) == 0) {
-      // 일치하면 해당하는 opcode 반환
-      return key->hex;
+      // 일치하면 해당하는 OpcodeDef *반환
+      return key;
     }
     pNode = pNode->next;
   }
 
   // 찾지 못한 경우 -1 반환
-  return -1;
+  return NULL;
 }
 
 void printOpcodeList(HashTable *hashTable) {

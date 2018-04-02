@@ -8,6 +8,20 @@
 #include "./util.h"
 #include "./shell-context.h"
 
+#define MNEMONIC_MAXLEN 6
+
+typedef enum _OPCODE_FORMAT {
+  FORMAT1 = 1,
+  FORMAT2 = 2,
+  FORMAT34 = 3
+} OPCODE_FORMAT;
+
+typedef struct _OpcodeDef {
+  char mn[MNEMONIC_MAXLEN+1];
+  BYTE hex;
+  OPCODE_FORMAT fm;
+} OpcodeDef;
+
 /** initOpcodeList
  *  opcode 해시테이블 초기화 함수
  * 
@@ -30,7 +44,7 @@ HashTable *initOpcodeList(FILE *stream);
  *  @반환
  *    찾은 mnemonic의 opcode, 실패 시 -1
  */
-int findOpcode(HashTable *hashTable, char const *pat);
+OpcodeDef *findOpcode(HashTable *hashTable, char const *pat);
 
 /** printOpcodeList
  *  opcode 해시테이블을 visual하게 출력
