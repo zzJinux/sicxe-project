@@ -22,7 +22,6 @@ EXIT_FLAG COMMAND_ASSEMBLE(ShellContextPtr pContext, const Arguments args) {
   int i=0, j=-1;
   char ch;
   char const* path = args.argv[1];
-  while((ch=path[i]) != '\0') 
   for(i=0; (ch=path[i]) != '\0'; ++i) {
     if(ch == '.') j=i;
   }
@@ -41,17 +40,17 @@ EXIT_FLAG COMMAND_ASSEMBLE(ShellContextPtr pContext, const Arguments args) {
     return INTERNAL_COMMAND_ERROR;
   }
 
-  lstPath = malloc(sizeof(DEFAULT_LST_EXT)+1);
-  objPath = malloc(sizeof(DEFAULT_OBJ_EXT)+1);
+  lstPath = malloc(j+1+sizeof(DEFAULT_LST_EXT));
+  objPath = malloc(j+1+sizeof(DEFAULT_OBJ_EXT));
   if(lstPath == NULL || objPath == NULL) {
     printErrMsg(ALLOC_ERR);
     return INTERNAL_COMMAND_ERROR;
   }
 
-  sprintf(lstPath, "%*s.%s", j, path, DEFAULT_LST_EXT);
+  sprintf(lstPath, "%.*s.%s", j, path, DEFAULT_LST_EXT);
   lstOut = fopen(lstPath, "w");
 
-  sprintf(objPath, "%*s.%s", j, path, DEFAULT_OBJ_EXT);
+  sprintf(objPath, "%.*s.%s", j, path, DEFAULT_OBJ_EXT);
   objOut = fopen(objPath, "w");
 
   if(lstOut == NULL || objOut == NULL) {
