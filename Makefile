@@ -11,10 +11,10 @@ debug: build
 .PHONY: release
 release: build
 
-.PHONY: dir
 .PHONY: build
 build: mkdir 20131604.out
 
+.PHONY: mkdir
 mkdir:
 	mkdir -p $(OBJ_DIR)
 
