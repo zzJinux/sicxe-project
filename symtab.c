@@ -23,7 +23,7 @@ SymbolDef *findSymbol(HashTable *symtab, char const *sym) {
   return NULL;
 }
 
-LLNodePtr addSymbol(HashTable *symtab, char const *sym, OFFSET loc) {
+LLNodePtr addSymbol(HashTable *symtab, char const *sym, int loc) {
   LLNodePtr nn = malloc(sizeof(LLNode));
   SymbolDef *key = malloc(sizeof(SymbolDef));
   char *buf = malloc(strlen(sym)+1);

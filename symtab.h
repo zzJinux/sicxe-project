@@ -12,7 +12,7 @@ HashTable *initSymbolTable(void);
 
 SymbolDef *findSymbol(HashTable *symtab, char const *sym);
 
-LLNodePtr addSymbol(HashTable *symtab, char const *sym, OFFSET loc);
+LLNodePtr addSymbol(HashTable *symtab, char const *sym, int loc);
 
 void printSymbolTable(HashTable *symtab);
 
