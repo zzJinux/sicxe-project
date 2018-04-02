@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include "./typedefs.h"
 
+typedef void (*CLEANUP_FUNC)(void *);
+
 typedef struct _LinkedListNode {
   void *key;
   struct _LinkedListNode *next;
