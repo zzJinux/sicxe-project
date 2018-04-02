@@ -25,9 +25,10 @@ typedef enum _ASSEMBLE_ERROR {
 } ASSEMBLE_ERROR;
 
 typedef enum _SYNTAX_ERROR {
-  START_DIRECTIVE_WRONG_PLACE,
+  START_DIRECTIVE_WRONG_PLACE = 1,
   BAD_ADDRESS,
-  PROGRAM_NAME_TOO_LONG
+  PROGRAM_NAME_TOO_LONG,
+  ADDR_TOO_LARGE
 } SYNTAX_ERROR;
 
 typedef struct _Token {
@@ -52,6 +53,7 @@ ERROR_CODE assemble(ShellContextPtr pContext, FILE *asmIn, FILE *lstOut, FILE *o
   ASSEMBLE_ERROR errCode = 0;
   
   int lineNo = 0;
+  OFFSET locBegin = 0;
   OFFSET locctr = 0;
 
   while(1) {
@@ -114,7 +116,7 @@ ERROR_CODE assemble(ShellContextPtr pContext, FILE *asmIn, FILE *lstOut, FILE *o
       goto cleanup;
     }
 
-    if(strcmp(mnemoTok->tokenText, DIRECTIVE_START)) {
+    if(strcmp(mnemoTok->tokenText, DIRECTIVE_START) == 0) {
       if(locctr > 0) {
         errCode = SYNTAX_PARSE_FAIL;
         printSyntaxErrMsg(START_DIRECTIVE_WRONG_PLACE, line, lineNo, mnemoTok->colNo);
@@ -131,11 +133,15 @@ ERROR_CODE assemble(ShellContextPtr pContext, FILE *asmIn, FILE *lstOut, FILE *o
       // TODO: parsing needs refinement
       // 프로그램 시작주소 검사
       sscanf(operandTok->tokenText, "%x", &locctr);
+      locBegin = locctr;
       if(locctr >= pContext->memSize) {
         errCode = SYNTAX_PARSE_FAIL;
         printSyntaxErrMsg(BAD_ADDRESS, line, lineNo, operandTok->colNo);
         goto cleanup;
       }
+    }
+
+    if(strcmp(mnemoTok->tokenText, DIRECTIVE_RESB)) {
     }
 
   nextIteration:
