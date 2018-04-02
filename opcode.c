@@ -12,9 +12,9 @@
 #define MNEMONIC_MAXLEN 6
 
 typedef enum _OPCODE_FORMAT {
-  FORMAT1,
-  FORMAT2,
-  FORMAT34
+  FORMAT1 = 1,
+  FORMAT2 = 2,
+  FORMAT34 = 3
 } OPCODE_FORMAT;
 
 typedef struct _OpcodeDef {
