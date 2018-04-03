@@ -1,6 +1,7 @@
 #include "./util.h"
 
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
 #include "typedefs.h"
@@ -112,10 +113,16 @@ int getTokenSize(char const *src) {
   int inQ = 0;
   char ch;
   char const *begin = src;
-  while((!isspace(ch=*src) || (ch!='\n' && inQ)) && !!ch) {
+  while((!isspace(ch=*src) || (ch!='\n' && inQ)) && ch != '\0') {
     // string literal quote detected
     if(ch == '\'') {
       inQ = !inQ;
+    }
+    else if(!inQ && ch == ',') {
+      int u=1;
+      ch = jumpBlank(src, &u);
+      src += u;
+      continue;
     }
     ++src;
   }
@@ -127,19 +134,6 @@ int getTokenSize(char const *src) {
   return src - begin;
 }
 
-char const *copyToken(char *dest, char const *src) {
-  int inQ = 0;
-  char ch;
-  while((!isspace(ch=*src) || (ch!='\n' && inQ)) && !!ch) {
-    if(ch == '\'') {
-      inQ = !inQ;
-    }
-    *dest++ = *src++;
-  }
-  *dest = '\0';
-  return src;
-}
-
 char *readToken(char const *text, int *pLen) {
   int len = getTokenSize(text);
   *pLen = len;
@@ -147,6 +141,7 @@ char *readToken(char const *text, int *pLen) {
     return NULL;
   }
   char *str = malloc(len+1);
-  copyToken(str, text);
+  strncpy(str, text, len);
+  str[len] = '\0';
   return str;
 }
