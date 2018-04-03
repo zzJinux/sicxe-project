@@ -24,6 +24,18 @@ void cleanupHashTable(HashTable *table, void (*cleanupKey)(void *));
 
 unsigned hash_adler32(char const *text, int mod);
 
+typedef struct _Vec {
+  int size;
+  int _rsize;
+  void **arr;
+  CLEANUP_FUNC cleanupItem;
+} Vec;
+
+Vec *initVec(int initSize, CLEANUP_FUNC cb);
+Vec *vecPush(Vec *vec, void *key);
+void cleanupVec(Vec *vec);
+
+
 /** parseHex_u20
  *  hex에 저장된 문자열을 hexadecimal로 간주하고 최대 20bit의 정수로 파싱
  * 

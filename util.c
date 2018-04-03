@@ -72,6 +72,43 @@ unsigned hash_adler32(char const *text, int mod) {
   return (b<<16|a) % mod;
 }
 
+#define VEC_INC_AMOUNT (32)
+
+Vec *initVec(int initSize, CLEANUP_FUNC cb) {
+  Vec *vec = malloc(sizeof(Vec));
+  void **arr = malloc(initSize * sizeof(void *));
+  if(vec == NULL || arr == NULL) {
+    return NULL;
+  }
+
+  vec->size = 0;
+  vec->_rsize = initSize;
+  vec->arr = arr;
+  vec->cleanupItem = cb;
+}
+
+Vec *vecPush(Vec *vec, void *item) {
+  if(vec->size + 1 > vec->_rsize) {
+    vec->_rsize += VEC_INC_AMOUNT;
+    vec->arr = realloc(vec->arr, vec->_rsize * sizeof(void *));
+    if(vec->arr == NULL) {
+      return NULL;
+    }
+  }
+
+  vec->arr[vec->size++] = item;
+  return vec;
+}
+
+void cleanupVec(Vec *vec) {
+  if(vec == NULL) return;
+  int i, size;
+  for(i=0, size=vec->size; i<size; ++i) {
+    vec->cleanupItem(vec->arr[i]);
+  }
+  free(vec->arr);
+}
+
 NUMBER_PARSE_ERROR parseHex_u20(char const *hex, unsigned *p) {
   unsigned x = 0;
   char c;
