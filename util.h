@@ -2,6 +2,8 @@
 #define _UTIL_H_
 
 #include <stdio.h>
+#include <ctype.h>
+#include <stdbool.h>
 #include "./typedefs.h"
 
 typedef void (*CLEANUP_FUNC)(void *);
@@ -35,7 +37,6 @@ Vec *initVec(int initSize, CLEANUP_FUNC cb);
 Vec *vecPush(Vec *vec, void *key);
 void cleanupVec(Vec *vec);
 
-
 /** parseHex_u20
  *  hex에 저장된 문자열을 hexadecimal로 간주하고 최대 20bit의 정수로 파싱
  * 
@@ -65,5 +66,7 @@ char *freadLine(FILE *stream);
 int getTokenSize(char const *src);
 char const *copyToken(char *dest, char const *src);
 char *readToken(char const *text, int *pLen);
+
+int findToken(char const *text, char delim, int *i_r, int *len_r);
 
 #endif

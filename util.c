@@ -85,6 +85,8 @@ Vec *initVec(int initSize, CLEANUP_FUNC cb) {
   vec->_rsize = initSize;
   vec->arr = arr;
   vec->cleanupItem = cb;
+
+  return vec;
 }
 
 Vec *vecPush(Vec *vec, void *item) {
@@ -181,4 +183,45 @@ char *readToken(char const *text, int *pLen) {
   strncpy(str, text, len);
   str[len] = '\0';
   return str;
+}
+
+int findToken(char const *text, char delim, int *i_r, int *len_r) {
+  char ch;
+  int i = 0;
+
+  ch = jumpBlank(text, &i);
+  if(ch == '\0' || ch == delim) {
+    if(i_r != NULL) *i_r = i;
+    if(len_r != NULL) *len_r = 0;
+    return -1;
+  }
+
+  int start = i;
+  while(!isspace(ch=text[i]) && ch != delim && ch != '\0') ++i;
+  // 인자 문자열 경계 찾음
+  if(i_r != NULL) *i_r = start;
+  if(len_r != NULL) *len_r = i - start;
+
+  // delimiter 유효성 검사 시작
+  ch = jumpBlank(text, &i);
+
+  if(ch != '\0' && ch != delim) {
+    // delimiter 누락
+    return -1;
+  }
+
+  // 연속된 delimiter 검사
+  if(ch == delim) {
+    ++i;
+    ch = jumpBlank(text, &i);
+    if(ch == '\0' || ch == delim) {
+      return -1;
+    }
+
+    // next token
+    return i;
+  }
+
+  // null
+  return 0;
 }
