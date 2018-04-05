@@ -35,7 +35,7 @@ LLNodePtr addSymbol(HashTable *symtab, char const *sym, int loc) {
   key->name = buf;
   key->loc = loc;
 
-  int h = hash_adler32(sym, symtab->size);
+  int h = hash_adler32(buf, symtab->size);
   LLNodePtr *dp =  symtab->buckets + h, p;
 
   p = *dp;
@@ -51,7 +51,7 @@ LLNodePtr addSymbol(HashTable *symtab, char const *sym, int loc) {
 }
 
 static int SymbolDefCmp(const void *a, const void *b) {
-  return strcmp((*(SymbolDef **)a)->name, (*(SymbolDef **)b)->name);
+  return strcmp((*(SymbolDef **)b)->name, (*(SymbolDef **)a)->name);
 }
 
 int printSymbolTable(HashTable *symtab) {
