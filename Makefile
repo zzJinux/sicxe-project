@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Werror $(INCLUDE_PARAMS)
+CFLAGS = -std=gnu11 -Wall -Werror $(INCLUDE_PARAMS)
 C_DEBUG_FLAGS =
 SRCS := $(wildcard *.c)
 OBJ_DIR = objs
@@ -20,6 +20,8 @@ mkdir:
 
 20131604.out: $(OBJS)
 	$(CC) -o $@ $^ $(CFLAGS)
+
+$(OBJ_DIR)/assemble.o: assemble_pass1.c assemble_pass2.c
 
 $(OBJ_DIR)/%.o: %.c
 	$(CC) -c $(C_DEBUG_FLAGS) -o $@ $< $(CFLAGS)
