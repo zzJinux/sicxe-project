@@ -22,6 +22,16 @@ typedef struct _OpcodeDef {
   OPCODE_FORMAT fm;
 } OpcodeDef;
 
+enum _INSTRUCTION_FORMAT_FLAG {
+  DEFAULT_FORMAT_HANDLING = 0,
+  FORMAT34_NO_ARG,
+  FORMAT2_SHIFT_OP,
+  FORMAT2_SINGLE_ARG,
+  FORMAT2_CONSTANT_ARG
+};
+
+enum _INSTRUCTION_FORMAT_FLAG INSTRUCTION_FORMAT_DETECTOR(OpcodeDef *opd);
+
 /** initOpcodeList
  *  opcode 해시테이블 초기화 함수
  * 

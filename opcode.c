@@ -10,6 +10,25 @@
 
 #define OPCODE_TABLE_SIZE 20
 
+enum _INSTRUCTION_FORMAT_FLAG INSTRUCTION_FORMAT_DETECTOR(OpcodeDef *opd) {
+  char const *name = opd->mn;
+  if(strcmp(name, "RSUB") == 0) {
+    return FORMAT34_NO_ARG;
+  }
+  else if(strncmp(name, "SHIFT", 5) == 0) {
+    return FORMAT2_SHIFT_OP;
+  }
+  else if(strcmp(name, "CLEAR") == 0 || strcmp(name, "TIXR") == 0) {
+    return FORMAT2_SINGLE_ARG;
+  }
+  else if(strcmp(name, "SVC") == 0) {
+    return FORMAT2_CONSTANT_ARG;
+  }
+  else {
+    return DEFAULT_FORMAT_HANDLING;
+  }
+}
+
 static LLNodePtr createNode(BYTE opcode, char const mnemonic[], OPCODE_FORMAT fm) {
   LLNodePtr p = malloc(sizeof(LLNode));
   OpcodeDef *key = malloc(sizeof(OpcodeDef));
