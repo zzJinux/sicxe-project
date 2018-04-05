@@ -72,6 +72,11 @@ static void printErrMsg(EXIT_FLAG exitFlag, ShellCmd const *pCmd) {
   if(exitFlag == 0 || exitFlag & QUIT_SHELL) return;
 
   // AND 연산자로 플래그를 검사한 후 에러메시지 출력
+  if(exitFlag & INTERNAL_COMMAND_ERROR) {
+    // 명령어 자체적으로 에러 출력
+    return;
+  }
+
   printf("-shell: ");
   if(exitFlag & UNKNOWN_COMMAND) {
     printf("unknown command");
@@ -93,9 +98,6 @@ static void printErrMsg(EXIT_FLAG exitFlag, ShellCmd const *pCmd) {
     else {
       printf("<unknown>");
     }
-  }
-  else if(exitFlag & INTERNAL_COMMAND_ERROR) {
-    // empty
   }
   else {
     printf("<unknown error>");
