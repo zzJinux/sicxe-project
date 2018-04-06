@@ -25,6 +25,7 @@ typedef enum _SYNTAX_ERROR {
   UNDEFINED_REGISTER // 정의에 없는 register 번호
 } SYNTAX_ERROR;
 
+/* enum _SYNTAX_ERROR에 정의된 상수들에 대응되는 에러메시지의 배열 */
 char const *SYNTAX_ERROR_MESSAGES[] = {
   "<no-error>",
   "START directive at wrong place",
