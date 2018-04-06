@@ -1,6 +1,13 @@
-#ifdef _ASSEMBLE_SUB_IMPL_
+#include "./assemble.h"
+
+#include <string.h>
+#include <stdlib.h>
+#include "./opcode.h"
+#include "./symtab.h"
 
 #define REGS_SIZE (sizeof(REGISTERS)/sizeof(REGISTERS[0]))
+
+static typeof(&_assemble_printSyntaxErrMsg) printSyntaxErrMsg;
 
 static struct _Registers {
   char mnemonic[3];
@@ -521,4 +528,3 @@ static void printModRec(FILE *objOut, AssembleState *pState) {
 static void printEndRec(FILE *objOut, AssembleState *pState) {
   fprintf(objOut, "E%06X\n", pState->pcAddr);
 }
-#endif

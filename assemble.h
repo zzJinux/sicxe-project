@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include "./shell-context.h"
 #include "./typedefs.h"
+#include "./util.h"
+
+#include "./assemble_types.h"
+#include "./assemble_errs.h"
 
 /* assemble 에 관련된 파일의 확장자 */
 #define DEFAULT_ASM_EXT "asm"
@@ -26,5 +30,30 @@
  *
  * */
 ERROR_CODE assemble(ShellContextPtr pContext, FILE *asmIn, FILE *lstOut, FILE *objOut);
+
+ERROR_CODE assemble_pass1(FILE *asmIn, HashTable *optab, HashTable *symtab, Vec *stVec);
+
+ASSEMBLE_ERROR assemble_pass2(FILE *lstOut, FILE *objOut, HashTable *optab, HashTable *symtab, Vec *stVec);
+
+/** _assemble_printErrMsg
+ *  assemble 중 발생한 오류의 메시지 출력
+ *
+ *  @인자
+ *    code - assemble 에러코드
+ *    detail - 에러 세부내용
+ *
+ */
+void _assemble_printErrMsg(ASSEMBLE_ERROR code, char const* detail);
+
+/** _assemble_printSynaxErrMsg (static)
+ *  assemble 중 발생한 문법 오류의 메시지 출력
+ *
+ *  @인자
+ *    code - assemble 에러코드
+ *    st - 오류가 발생한 Statement
+ *    colNo - 오류가 발생한 열번호
+ *
+ */
+void _assemble_printSyntaxErrMsg(SYNTAX_ERROR code, Statement *st, int colNo);
 
 #endif
