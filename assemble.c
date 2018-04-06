@@ -13,7 +13,24 @@
 #include "./symtab.h"
 #include "./util.h"
 
+/** printErrMsg (static)
+ *  assemble 중 발생한 오류의 메시지 출력
+ *
+ *  @인자
+ *    code - assemble 에러코드
+ *    detail - 에러 세부내용
+ *
+ */
 static void printErrMsg(ASSEMBLE_ERROR code, char const* detail);
+/** printSynaxErrMsg (static)
+ *  assemble 중 발생한 문법 오류의 메시지 출력
+ *
+ *  @인자
+ *    code - assemble 에러코드
+ *    st - 오류가 발생한 Statement
+ *    colNo - 오류가 발생한 열번호
+ *
+ */
 static void printSyntaxErrMsg(SYNTAX_ERROR code, Statement *st, int colNo);
 
 #define _ASSEMBLE_SUB_IMPL_
@@ -24,6 +41,7 @@ static void printSyntaxErrMsg(SYNTAX_ERROR code, Statement *st, int colNo);
 ERROR_CODE assemble(ShellContextPtr pContext, FILE *asmIn, FILE *lstOut, FILE *objOut) {
   ASSEMBLE_ERROR errCode;
 
+  // Statement를 저장할 동적배열을 생성함
   Vec *stVec = initVec(32, (CLEANUP_FUNC)cleanupStatement);
   if(stVec == NULL) {
     errCode = ALLOC_FAIL;
