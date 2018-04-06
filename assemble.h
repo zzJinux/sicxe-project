@@ -1,6 +1,7 @@
 #ifndef _ASSEMBLE_H_
 #define _ASSEMBLE_H_
 #include <stdio.h>
+#include <stdbool.h>
 #include "./shell-context.h"
 #include "./typedefs.h"
 #include "./util.h"
@@ -31,7 +32,7 @@
  * */
 ERROR_CODE assemble(ShellContextPtr pContext, FILE *asmIn, FILE *lstOut, FILE *objOut);
 
-ERROR_CODE assemble_pass1(FILE *asmIn, HashTable *optab, HashTable *symtab, Vec *stVec);
+ASSEMBLE_ERROR assemble_pass1(FILE *asmIn, HashTable *optab, HashTable *symtab, Vec *stVec);
 
 ASSEMBLE_ERROR assemble_pass2(FILE *lstOut, FILE *objOut, HashTable *optab, HashTable *symtab, Vec *stVec);
 

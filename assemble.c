@@ -14,7 +14,7 @@ char const *SYNTAX_ERROR_MESSAGES[] = {
   "<no-error>",
   "START directive at wrong place",
   "PROGRAM_NAME too long",
-  "location counter exceeded the limit",
+  "LOC is out of range",
   "invalid operand format",
   "invalid symbol name",
   "operand is missing",
@@ -22,7 +22,6 @@ char const *SYNTAX_ERROR_MESSAGES[] = {
   "opcode undefined",
   "symbol undefined",
   "constant is out-of-range",
-  "token is missing",
   "register undefined"
 };
 

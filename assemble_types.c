@@ -32,7 +32,7 @@ void cleanupToken(Token *pT) {
   free(pT);
 }
 
-Statement *createStatement(FILE *asmIn, int lineNo, int loc, ASSEMBLE_ERROR *pErr) {
+Statement *readStatement(FILE *asmIn, int lineNo, int loc, ASSEMBLE_ERROR *pErr) {
   Statement *st = malloc(sizeof(Statement));
   char const *line = freadLine(asmIn);
   if(st == NULL || line == NULL) {

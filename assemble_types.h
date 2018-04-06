@@ -22,7 +22,7 @@ typedef struct _Statement {
 Token *createToken(char const *str, int colNo, int *pLen, ASSEMBLE_ERROR *pErr);
 void cleanupToken(Token *pT);
 
-Statement *createStatement(FILE *asmIn, int lineNo, int loc, ASSEMBLE_ERROR *pErr);
+Statement *readStatement(FILE *asmIn, int lineNo, int loc, ASSEMBLE_ERROR *pErr);
 Statement *dummyStatement(int loc);
 void cleanupStatement(Statement *st);
 
