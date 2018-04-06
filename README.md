@@ -10,3 +10,8 @@
 
 * Note
   malloc 하면 끝까지 추적하여 free 로 조지자.
+
+
+* TODO
+  NOBASE operand 존재유무
+  identifier validator
