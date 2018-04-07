@@ -1,10 +1,13 @@
+/** assemble_errs.h
+ *  assemble 중 발생가능한 에러들에 대응되는 상수들을 정의
+ */
 #ifndef _ASSEMBLE_ERRS_H_
 #define _ASSEMBLE_ERRS_H_
 
 typedef enum _ASSEMBLE_ERROR {
-  ADDR_RESOLUTION_FAIL = 1<<3,
-  SYNTAX_PARSE_FAIL = 1<<4,
-  ALLOC_FAIL = 1<<5
+  ADDR_RESOLUTION_FAIL = 1<<3, // 주소를 표현할 방법이 없는 경우
+  SYNTAX_PARSE_FAIL = 1<<4, // 문법오류, 세부 내용은 _SYNTAX_ERROR 상수를 이용
+  ALLOC_FAIL = 1<<5 // 동적할당 오류
 } ASSEMBLE_ERROR;
 
 typedef enum _SYNTAX_ERROR {
