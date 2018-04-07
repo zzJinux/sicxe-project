@@ -18,7 +18,7 @@ bool identifierMatcher(char const *str, int *i_r) {
     return false;
   }
   int i = 1;
-  while(isEOS(str, i)) {
+  while(!isEOS(str, i)) {
     if(!isalnum(str[i])) {
       *i_r = i;
       return false;
@@ -41,7 +41,7 @@ bool charLiteralMatcher(char const *str, int *i_r) {
   }
 
   ++i;
-  while(isEOS(str, i)) {
+  while(!isEOS(str, i)) {
     if(str[i] == '\'') {
       *i_r = ++i;
       return isEOS(str, i) && i>3;
@@ -69,7 +69,7 @@ bool hexLiteralMatcher(char const *str, int *i_r) {
   }
 
   ++i;
-  while(isEOS(str, i)) {
+  while(!isEOS(str, i)) {
     if(str[i] == '\'') {
       *i_r = ++i;
       return isEOS(str, i) && i>3;
@@ -90,7 +90,7 @@ bool integerMatcher(char const *str, int *i_r) {
   char const *s = str;
   if(str[0] == '-' || str[0] == '+') ++s;
 
-  while(isEOS(s, i)) {
+  while(!isEOS(s, i)) {
     if(!isdigit(s[i])) {
       *i_r = i + (s-str);
       return false;
