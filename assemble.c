@@ -1,42 +1,30 @@
 #include "./assemble.h"
-#include "./assemble_types.h"
-#include "./assemble_consts.h"
-#include "./assemble_errs.h"
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
 #include "./typedefs.h"
 #include "./shell-context.h"
 #include "./opcode.h"
 #include "./symtab.h"
-#include "./util.h"
 
-/** printErrMsg (static)
- *  assemble 중 발생한 오류의 메시지 출력
- *
- *  @인자
- *    code - assemble 에러코드
- *    detail - 에러 세부내용
- *
- */
-static void printErrMsg(ASSEMBLE_ERROR code, char const* detail);
-/** printSynaxErrMsg (static)
- *  assemble 중 발생한 문법 오류의 메시지 출력
- *
- *  @인자
- *    code - assemble 에러코드
- *    st - 오류가 발생한 Statement
- *    colNo - 오류가 발생한 열번호
- *
- */
-static void printSyntaxErrMsg(SYNTAX_ERROR code, Statement *st, int colNo);
+#include "./assemble_types.h"
+#include "./assemble_consts.h"
+#include "./assemble_errs.h"
 
-#define _ASSEMBLE_SUB_IMPL_
-  #include "./assemble_pass1.c"
-  #include "./assemble_pass2.c"
-#undef _ASSEMBLE_SUB_IMPL_
+char const *SYNTAX_ERROR_MESSAGES[] = {
+  "<no-error>",
+  "START directive at wrong place",
+  "PROGRAM_NAME too long",
+  "LOC is out of range",
+  "invalid operand format",
+  "invalid symbol name",
+  "operand is missing",
+  "symbol is already defined",
+  "opcode undefined",
+  "symbol undefined",
+  "constant is out-of-range",
+  "register undefined"
+};
+
 
 ERROR_CODE assemble(ShellContextPtr pContext, FILE *asmIn, FILE *lstOut, FILE *objOut) {
   ASSEMBLE_ERROR errCode;
@@ -58,14 +46,14 @@ ERROR_CODE assemble(ShellContextPtr pContext, FILE *asmIn, FILE *lstOut, FILE *o
   }
 
 cleanup:
-  printErrMsg(errCode, "");
+  _assemble_printErrMsg(errCode, "");
   cleanupVec(stVec);
   return errCode;
 
   return 0;
 }
 
-static void printErrMsg(ASSEMBLE_ERROR code, char const* detail) {
+void _assemble_printErrMsg(ASSEMBLE_ERROR code, char const* detail) {
   if(code == 0) return;
   if(code & ADDR_RESOLUTION_FAIL) {
     printf("-assemble: address resolution fail\n");
@@ -81,7 +69,7 @@ static void printErrMsg(ASSEMBLE_ERROR code, char const* detail) {
   }
 }
 
-static void printSyntaxErrMsg(SYNTAX_ERROR code, Statement *st, int colNo) {
+void _assemble_printSyntaxErrMsg(SYNTAX_ERROR code, Statement *st, int colNo) {
   char const *line = st->line;
   int lineNo = st->lineNo;
   printf("-assemble: syntax error, ");

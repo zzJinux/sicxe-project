@@ -1,6 +1,10 @@
 #ifndef _ASSEMBLE_TYPES_H_
 #define _ASSEMBLE_TYPES_H_
 
+#include <stdio.h>
+#include "./util.h"
+#include "./typedefs.h"
+#include "./assemble_errs.h"
 #include "./assemble_consts.h"
 
 typedef struct _Token {
@@ -14,6 +18,13 @@ typedef struct _Statement {
   int loc; // Statement에 대으되는 location coutner
   Token *label, *mnemonic, *operand; // Statement의 구성 토큰들
 } Statement;
+
+Token *createToken(char const *str, int colNo, int *pLen, ASSEMBLE_ERROR *pErr);
+void cleanupToken(Token *pT);
+
+Statement *readStatement(FILE *asmIn, int lineNo, int loc, ASSEMBLE_ERROR *pErr);
+Statement *dummyStatement(int loc);
+void cleanupStatement(Statement *st);
 
 // Modification Record
 typedef struct _MRec {

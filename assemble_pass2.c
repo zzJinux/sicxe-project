@@ -1,6 +1,13 @@
-#ifdef _ASSEMBLE_SUB_IMPL_
+#include "./assemble.h"
+
+#include <string.h>
+#include <stdlib.h>
+#include "./opcode.h"
+#include "./symtab.h"
 
 #define REGS_SIZE (sizeof(REGISTERS)/sizeof(REGISTERS[0]))
+
+static typeof(&_assemble_printSyntaxErrMsg) printSyntaxErrMsg = _assemble_printSyntaxErrMsg;
 
 static struct _Registers {
   char mnemonic[3];
@@ -131,7 +138,7 @@ static ASSEMBLE_ERROR processDirective(AssembleState *pState, Statement *st) {
   else if(strcmp(tokText, DIRECTIVE_RESW) == 0) {
     pState->flag |= FLUSH_OBJRECORD | NO_OBJECT_CODE;
   }
-  else if(strcmp(tokText, DIRECITVE_BYTE) == 0) {
+  else if(strcmp(tokText, DIRECTIVE_BYTE) == 0) {
     char const *str = operand->tokenText;
     unsigned *buf = pState->objcodeBuf;
     int const SZ = sizeof(unsigned);
@@ -155,7 +162,7 @@ static ASSEMBLE_ERROR processDirective(AssembleState *pState, Statement *st) {
       }
     }
   }
-  else if(strcmp(tokText, DIRECITVE_WORD) == 0) {
+  else if(strcmp(tokText, DIRECTIVE_WORD) == 0) {
     pState->objcodeBuf[0] = strtol(operand->tokenText, NULL, 10);
     pState->objcodeLen = 3;
   }
@@ -521,4 +528,3 @@ static void printModRec(FILE *objOut, AssembleState *pState) {
 static void printEndRec(FILE *objOut, AssembleState *pState) {
   fprintf(objOut, "E%06X\n", pState->pcAddr);
 }
-#endif
