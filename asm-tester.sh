@@ -1,4 +1,6 @@
-for entry in test_asms/*
+for entry in test_asms/*.asm
 do
-  echo "assemble $entry" | ./20131604.out 
+  printf "test on $entry:\n"
+  printf "assemble $entry\nquit" | ./20131604.out 
+  printf "\n"
 done
