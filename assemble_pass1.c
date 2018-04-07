@@ -102,7 +102,7 @@ ASSEMBLE_ERROR assemble_pass1(FILE *asmIn, HashTable *optab, HashTable *symtab, 
       goto nextIteration;
     }
 
-    if(strcmp(tok->tokenText, DIRECITVE_BYTE) == 0) {
+    if(strcmp(tok->tokenText, DIRECTIVE_BYTE) == 0) {
       // forms of C'<string>' or X'<hex>'
       tok = st->operand;
       if(tok == NULL) {
@@ -154,7 +154,7 @@ ASSEMBLE_ERROR assemble_pass1(FILE *asmIn, HashTable *optab, HashTable *symtab, 
       }
     }
 
-    if(strcmp(tok->tokenText, DIRECITVE_WORD) == 0) {
+    if(strcmp(tok->tokenText, DIRECTIVE_WORD) == 0) {
       tok = st->operand;
       if(tok == NULL) {
         syntaxErrCode = OPERAND_MISSING;
