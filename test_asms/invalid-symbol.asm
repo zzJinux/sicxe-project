@@ -8,11 +8,11 @@ CLOOP  +JSUB  RDREC
        JEQ    ENDFIL
        +JSUB  WRREC
        J      CLOOP
+ENDFIL LDA    EOF
 .*******************************************
 . INVALID SYMBOL
 .*******************************************
-3DSDF LDA    EOF
-       STA    BUFFER
+2SDF  STA    BUFFER
        LDA    #3
        STA    LENGTH
        +JSUB  WRREC

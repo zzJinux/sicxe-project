@@ -17,7 +17,7 @@ ENDFIL LDA    EOF
 .*******************************************
 . BYTE hex too large
 .*******************************************
-EOF    BYTE   X'ABCDEFABCDEF'
+EOF    BYTE   X'ABCDEFABCDEFFFFFFFFFFFFFFFFFFFFFFFFAAAAAAAAAAA'
 RETADR RESW   1
 LENGTH RESW   1
 BUFFER RESB   4096
