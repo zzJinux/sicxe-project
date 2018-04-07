@@ -28,4 +28,4 @@ $(OBJ_DIR)/%.o: %.c
 
 .PHONY: clean
 clean:
-	rm -rf $(OBJ_DIR) 20131604.out
+	rm -rf $(OBJ_DIR) 20131604.out *.lst *.obj
