@@ -7,7 +7,7 @@
 
 #define REGS_SIZE (sizeof(REGISTERS)/sizeof(REGISTERS[0]))
 
-static typeof(&_assemble_printSyntaxErrMsg) printSyntaxErrMsg;
+static typeof(&_assemble_printSyntaxErrMsg) printSyntaxErrMsg = _assemble_printSyntaxErrMsg;
 
 static struct _Registers {
   char mnemonic[3];

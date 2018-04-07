@@ -6,7 +6,7 @@
 #include "./assemble.h"
 #include "./assemble_errs.h"
 
-static typeof(&_assemble_printSyntaxErrMsg) printSyntaxErrMsg;
+static typeof(&_assemble_printSyntaxErrMsg) printSyntaxErrMsg = _assemble_printSyntaxErrMsg;
 
 Token *createToken(char const *str, int colNo, int *pLen, ASSEMBLE_ERROR *pErr) {
   char *tokenText = readToken(str, pLen);
