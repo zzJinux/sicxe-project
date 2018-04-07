@@ -216,8 +216,8 @@ static void printLst(FILE *lstOut, AssembleState *pState, Statement *st) {
   else {
     fprintf(lstOut, "%04X  ", st->loc);
   }
-  int cnt = fprintf(lstOut, "%s", st->line);
-  for(cnt=48-cnt; cnt--; ) fputc(' ', lstOut);
+  int cnt = fprintf(lstOut, "%s", st->line), i;
+  for(i=0; i<48-cnt; i++) fputc(' ', lstOut);
   if(!(pState->flag & NO_OBJECT_CODE)) {
     unsigned *buf = pState->objcodeBuf;
     int numBytes = pState->objcodeLen;
@@ -255,9 +255,15 @@ static ASSEMBLE_ERROR processOpcode(AssembleState *pState, Statement *st) {
 
   iff = INSTRUCTION_FORMAT_DETECTOR(opd);
 
-  if(fm != FORMAT1 && iff != FORMAT34_NO_ARG && oprndText == NULL) {
-    printSyntaxErrMsg(OPERAND_MISSING, st, 0);
-    return SYNTAX_PARSE_FAIL;
+  if(fm != FORMAT1 && iff != FORMAT34_NO_ARG) {
+    if(oprndText == NULL) {
+      printSyntaxErrMsg(OPERAND_MISSING, st, 0);
+      return SYNTAX_PARSE_FAIL;
+    }
+  }
+  else if(oprndText != NULL) {
+      printSyntaxErrMsg(INVALID_OPERAND_FORMAT, st, 0);
+      return SYNTAX_PARSE_FAIL;
   }
 
   // 밀고
@@ -301,7 +307,12 @@ static ASSEMBLE_ERROR processOpcode(AssembleState *pState, Statement *st) {
         return SYNTAX_PARSE_FAIL;
       }
 
-      if(extended && (disp >= -(1<<19) || disp < (1<<19))) {}
+      if(extended) {
+        if(disp < -(1<<19) || disp >= (1<<19)) {
+          printSyntaxErrMsg(CONSTANT_TOO_LARGE, st, st->operand->colNo+i);
+          return SYNTAX_PARSE_FAIL;
+        }
+      }
       else if(disp >= -(1<<11) && disp < (1<<11)) {
         disp <<= 8;
       }
@@ -400,11 +411,15 @@ static ASSEMBLE_ERROR processOpcode(AssembleState *pState, Statement *st) {
 
     instruction |= regN<<20;
 
-    if(nextIdx == 0) {
-      if(iff == FORMAT2_CONSTANT_ARG || iff == FORMAT2_SINGLE_ARG) {
+    if(iff == FORMAT2_CONSTANT_ARG || iff == FORMAT2_SINGLE_ARG) {
+      if(nextIdx == 0) {
         goto final;
       }
 
+      printSyntaxErrMsg(INVALID_OPERAND_FORMAT, st, st->operand->colNo+i);
+      return SYNTAX_PARSE_FAIL;
+    }
+    else if(nextIdx == 0) {
       printSyntaxErrMsg(INVALID_OPERAND_FORMAT, st, st->operand->colNo+i);
       return SYNTAX_PARSE_FAIL;
     }
@@ -440,7 +455,7 @@ static ASSEMBLE_ERROR processOpcode(AssembleState *pState, Statement *st) {
 
     instruction |= regN<<16;
   }
-  
+
 final:
   // 당기기
   instruction >>= ((4-(int)fm-extended) * 8);
