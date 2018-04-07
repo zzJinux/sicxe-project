@@ -279,6 +279,7 @@ ASSEMBLE_ERROR assemble_pass1(FILE *asmIn, HashTable *optab, HashTable *symtab, 
 
 _cleanup_:
   if(syntaxErrCode) {
+    errCode = SYNTAX_PARSE_FAIL;
     printSyntaxErrMsg(syntaxErrCode, st, colNo);
   }
   emptySymbolTable(symtab);
