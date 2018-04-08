@@ -74,9 +74,8 @@ ASSEMBLE_ERROR assemble_pass2(FILE *lstOut, FILE *objOut, HashTable *optab, Hash
       goto cleanup;
     }
 
-    printTextRec(objOut, &state, st->loc);
-
     printLst(lstOut, &state, st);
+    printTextRec(objOut, &state, st->loc);
   }
 
   printModRec(objOut, &state);

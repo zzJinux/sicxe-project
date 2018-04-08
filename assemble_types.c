@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "./util.h"
 #include "./assemble.h"
 #include "./assemble_errs.h"
@@ -9,18 +10,27 @@
 static typeof(&_assemble_printSyntaxErrMsg) printSyntaxErrMsg = _assemble_printSyntaxErrMsg;
 
 Token *createToken(char const *str, int colNo, int *pLen, ASSEMBLE_ERROR *pErr) {
-  char *tokenText = readToken(str, pLen);
-  if(tokenText == NULL) {
-    if(*pLen == -1) { *pErr = SYNTAX_PARSE_FAIL; }
-    else { *pErr = ALLOC_FAIL; }
+  int sz = getTokenSize(str);
+  if(sz == -1) {
+    *pErr = SYNTAX_PARSE_FAIL;
     return NULL;
   }
+
+  char *tokenText = malloc(sz+1);
+  if(tokenText == NULL) {
+    *pErr = ALLOC_FAIL;
+    return NULL;
+  }
+
+  strncpy(tokenText, str, sz);
+  tokenText[sz] = 0;
 
   Token *pT = malloc(sizeof(Token));
   if(pT == NULL) {
     return NULL;
   }
 
+  *pLen = sz;
   pT->tokenText = tokenText;
   pT->colNo = colNo;
   return pT;

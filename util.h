@@ -64,8 +64,6 @@ char jumpBlank(char const *str, int *pPos);
 char *freadLine(FILE *stream);
 
 int getTokenSize(char const *src);
-char const *copyToken(char *dest, char const *src);
-char *readToken(char const *text, int *pLen);
 
 int findToken(char const *text, char delim, int *i_r, int *len_r);
 

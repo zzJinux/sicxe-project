@@ -241,6 +241,12 @@ ASSEMBLE_ERROR assemble_pass1(FILE *asmIn, HashTable *optab, HashTable *symtab, 
     if(labelTok) {
       char const *labelName = labelTok->tokenText;
 
+      if(!identifierMatcher(labelName, NULL)) {
+        syntaxErrCode = INVALID_SYMBOL_NAME;
+        colNo = labelTok->colNo;
+        goto cleanup;
+      }
+
       if(findSymbol(symtab, labelName)) {
         syntaxErrCode = DUPLICATE_SYMBOL;
         colNo = labelTok->colNo;

@@ -149,40 +149,36 @@ char *freadLine(FILE* stream) {
 }
 
 int getTokenSize(char const *src) {
-  int inQ = 0;
   char ch;
   char const *begin = src;
-  while((!isspace(ch=*src) || (ch!='\n' && inQ)) && ch != '\0') {
+  while((ch=*src) != '\n' && ch) {
     // string literal quote detected
     if(ch == '\'') {
-      inQ = !inQ;
+      ++src;
+      while((ch=*src) != '\'' && ch) ++src;
+      if(!ch) {
+        return -1;
+      }
     }
-    else if(!inQ && ch == ',') {
+    else if(isspace(ch) || ch == ',') {
       int u=1;
+      if(isspace(ch)) {
+        ch = jumpBlank(src, &u);
+        if(ch != ',') { break; }
+        ++u;
+      }
       ch = jumpBlank(src, &u);
+      if(ch == ',' || !ch) {
+        return -1;
+      }
       src += u;
       continue;
     }
+
     ++src;
   }
 
-  // open-quote error
-  if(inQ) {
-    return -1;
-  }
   return src - begin;
-}
-
-char *readToken(char const *text, int *pLen) {
-  int len = getTokenSize(text);
-  *pLen = len;
-  if(len == -1) {
-    return NULL;
-  }
-  char *str = malloc(len+1);
-  strncpy(str, text, len);
-  str[len] = '\0';
-  return str;
 }
 
 int findToken(char const *text, char delim, int *i_r, int *len_r) {
