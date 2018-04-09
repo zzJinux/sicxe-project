@@ -22,29 +22,33 @@ EXIT_FLAG COMMAND_ASSEMBLE(ShellContextPtr pContext, const Arguments args) {
   int i=0, j=-1;
   char ch;
   char const* path = args.argv[1];
+  ERR_FLAG errFlag = 0;
+  unsigned asmErr = 0;
+
+  FILE *asmIn = NULL, *lstOut = NULL, *objOut = NULL;
+  char *lstPath = NULL, *objPath = NULL;
+
+  // 파일명 문자열의 확장자 부분들 찾는다
   for(i=0; (ch=path[i]) != '\0'; ++i) {
     if(ch == '.') j=i;
   }
 
   if(j == -1 || strcmp(DEFAULT_ASM_EXT, path+j+1) != 0) {
-    printErrMsg(EXT_MISMATCH);
-    return INTERNAL_COMMAND_ERROR;
+    errFlag = EXT_MISMATCH;
+    goto cleanup;
   }
-
-  FILE *asmIn, *lstOut, *objOut;
-  char *lstPath = NULL, *objPath = NULL;
 
   asmIn = fopen(args.argv[1], "r");
   if(asmIn == NULL) {
-    printErrMsg(FILE_OPEN_ERR);
-    return INTERNAL_COMMAND_ERROR;
+    errFlag = FILE_OPEN_ERR;
+    goto cleanup;
   }
 
   lstPath = malloc(j+1+sizeof(DEFAULT_LST_EXT));
   objPath = malloc(j+1+sizeof(DEFAULT_OBJ_EXT));
   if(lstPath == NULL || objPath == NULL) {
-    printErrMsg(ALLOC_ERR);
-    return INTERNAL_COMMAND_ERROR;
+    errFlag = ALLOC_ERR;
+    goto cleanup;
   }
 
   sprintf(lstPath, "%.*s.%s", j, path, DEFAULT_LST_EXT);
@@ -54,17 +58,17 @@ EXIT_FLAG COMMAND_ASSEMBLE(ShellContextPtr pContext, const Arguments args) {
   objOut = fopen(objPath, "w");
 
   if(lstOut == NULL || objOut == NULL) {
-    printErrMsg(FILE_OPEN_ERR);
-    free(lstPath);
-    free(objPath);
-    return INTERNAL_COMMAND_ERROR;
+    errFlag = FILE_OPEN_ERR;
+    goto cleanup;
   }
 
-  unsigned asmErr = assemble(pContext, asmIn, lstOut, objOut);
+  // 실제 assemble의 시작
+  asmErr = assemble(pContext, asmIn, lstOut, objOut);
 
-  fclose(asmIn);
-  fclose(lstOut);
-  fclose(objOut);
+cleanup:
+  if(asmIn != NULL) fclose(asmIn);
+  if(lstOut != NULL) fclose(lstOut);
+  if(objOut != NULL) fclose(objOut);
   if(asmErr != 0) {
     remove(lstPath);
     remove(objPath);
@@ -72,7 +76,11 @@ EXIT_FLAG COMMAND_ASSEMBLE(ShellContextPtr pContext, const Arguments args) {
   free(lstPath);
   free(objPath);
 
-  return asmErr ? INTERNAL_COMMAND_ERROR : 0;
+  if(errFlag != 0) {
+    printErrMsg(errFlag);
+  }
+
+  return errFlag || asmErr ? INTERNAL_COMMAND_ERROR : 0;
 }
 
 static void printErrMsg(ERR_FLAG flag) {

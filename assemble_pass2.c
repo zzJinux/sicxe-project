@@ -40,7 +40,7 @@ static void printModRec(FILE *objOut, AssembleState *pState);
 static void printEndRec(FILE *objOut, AssembleState *pState);
 
 ASSEMBLE_ERROR assemble_pass2(FILE *lstOut, FILE *objOut, HashTable *optab, HashTable *symtab, Vec *stVec) {
-  ASSEMBLE_ERROR asmErr;
+  ASSEMBLE_ERROR asmErr = 0;
 
   AssembleState state;
 
