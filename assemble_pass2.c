@@ -29,6 +29,26 @@ static int findRegisterNumber(char const *reg, int len) {
 
 static int initStates(AssembleState *pState, HashTable *optab, HashTable *symtab, Vec *stVec);
 
+/** static cleanupStates
+ *  initStates 중에 수행된 동적할당 자원들을 해제함
+ * 
+ *  @인자
+ *    pState - 대상 Assemble State
+ */
+static void cleanupStates(AssembleState *pState);
+
+/** static processDirective
+ *  Statement가 Directive Statement일 경우 정의된 연산을 수행한다.
+ *  Directive에 따라 objcode를 생성하거나 AssembleState에 변화를 준다.
+ *  Directive가 아닐 경우 기본동작만 수행하고 끝난다
+ * 
+ *  @인자
+ *    pState - ASsemble State;
+ *    st - 수행할 대상 Statement
+ *    
+ *  @반환
+ *    process 중 발생한 에러코드
+*/
 static ASSEMBLE_ERROR processDirective(AssembleState *pState, Statement *st);
 static ASSEMBLE_ERROR processOpcode(AssembleState *pState, Statement *st);
 
@@ -81,10 +101,8 @@ ASSEMBLE_ERROR assemble_pass2(FILE *lstOut, FILE *objOut, HashTable *optab, Hash
   printModRec(objOut, &state);
   printEndRec(objOut, &state);
 
-  return 0;
-
 cleanup:
-  cleanupVec(state.mRecVec);
+  cleanupStates(&state);
   return asmErr;
 }
 
@@ -117,6 +135,10 @@ static int initStates(AssembleState *pState, HashTable *optab, HashTable *symtab
   }
 
   return 0;
+}
+
+static void cleanupStates(AssembleState *pState) {
+  cleanupVec(pState->mRecVec);
 }
 
 static ASSEMBLE_ERROR processDirective(AssembleState *pState, Statement *st) {

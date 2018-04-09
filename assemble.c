@@ -49,8 +49,6 @@ cleanup:
   _assemble_printErrMsg(errCode, "");
   cleanupVec(stVec);
   return errCode;
-
-  return 0;
 }
 
 void _assemble_printErrMsg(ASSEMBLE_ERROR code, char const* detail) {
