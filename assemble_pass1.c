@@ -238,7 +238,10 @@ ASSEMBLE_ERROR assemble_pass1(FILE *asmIn, HashTable *optab, HashTable *symtab, 
     }
     
     Token *labelTok = st->label;
-    if(labelTok) {
+    if(
+      labelTok &&
+      !(st->mnemonic && strcmp(st->mnemonic->tokenText, START_DIRECTIVE) == 0)
+    ) {
       char const *labelName = labelTok->tokenText;
 
       if(!identifierMatcher(labelName, NULL)) {
