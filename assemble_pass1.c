@@ -240,7 +240,7 @@ ASSEMBLE_ERROR assemble_pass1(FILE *asmIn, HashTable *optab, HashTable *symtab, 
     Token *labelTok = st->label;
     if(
       labelTok &&
-      !(st->mnemonic && strcmp(st->mnemonic->tokenText, START_DIRECTIVE) == 0)
+      !(st->mnemonic && strcmp(st->mnemonic->tokenText, DIRECTIVE_START) == 0)
     ) {
       char const *labelName = labelTok->tokenText;
 
