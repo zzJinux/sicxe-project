@@ -39,6 +39,7 @@ typedef struct _AssembleState {
   char programName[PROGRAM_NAME_LIMIT+1];
   int programLength;
   int startAddr; // 프로그램의 시작 주소
+  int firstInstruction; // 프로그램의 첫번째 instruction 의 주소
   int baseAddr; // BASE directive로 지정되는 주소
 
   /** 

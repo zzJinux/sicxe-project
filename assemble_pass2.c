@@ -102,6 +102,7 @@ static int initStates(AssembleState *pState, HashTable *optab, HashTable *symtab
   
   pState->programLength = last->loc - first->loc;
   pState->startAddr = first->loc;
+  pState->firstInstruction = pState->startAddr;
   pState->pcAddr = first->loc;
   pState->objcodeLen = 0;
   pState->flag = 0;
@@ -192,7 +193,7 @@ static ASSEMBLE_ERROR processDirective(AssembleState *pState, Statement *st) {
       pState->pcAddr = sym->loc;
     }
     else {
-      pState->pcAddr = pState->startAddr;
+      pState->pcAddr = pState->firstInstruction;
     }
 
     pState->flag |= FLUSH_OBJRECORD | NO_OBJECT_CODE | SKIP_LOC_PRINT;
@@ -460,6 +461,9 @@ final:
   instruction >>= ((4-(int)fm-extended) * 8);
   pState->objcodeBuf[0] = instruction;
   pState->objcodeLen = (int)fm + extended;
+  if(pState->firstInstruction == pState->startAddr) {
+    pState->firstInstruction = st->loc;
+  }
 
   pState->flag |= PROCESS_COMPLETE;
   return 0;
