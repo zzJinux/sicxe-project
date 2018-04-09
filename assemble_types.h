@@ -43,7 +43,7 @@ typedef struct _AssembleState {
 
   /** 
    * pcAddr은 instruction의 pc-relative 계산에 사용되거나
-   * END Directive 가 시정한 시작 instruction의 주소를 저장함
+   * END Directive 가 지정한 시작 instruction의 주소를 저장함
    */
   int pcAddr;
 
